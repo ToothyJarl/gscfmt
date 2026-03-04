@@ -49,15 +49,15 @@ main()
     level.fogvalue["b"] = 0.0;
     level.fogvalue["near"] = 100;
     level.fogvalue["half"] = 4000;
-    maps\_utility::add_start( "bridge",::misc_dummy, &"STARTS_BRIDGE" );
-    maps\_utility::add_start( "deck",::misc_dummy, &"STARTS_DECK" );
-    maps\_utility::add_start( "hallways",::misc_dummy, &"STARTS_HALLWAYS" );
-    maps\_utility::add_start( "cargohold",::misc_dummy, &"STARTS_CARGOHOLD" );
-    maps\_utility::add_start( "cargohold2",::misc_dummy, &"STARTS_CARGOHOLD2" );
-    maps\_utility::add_start( "laststand",::misc_dummy, &"STARTS_LASTSTAND" );
-    maps\_utility::add_start( "package",::misc_dummy, &"STARTS_PACKAGE" );
-    maps\_utility::add_start( "escape",::misc_dummy, &"STARTS_ESCAPE" );
-    maps\_utility::add_start( "end",::misc_dummy, &"STARTS_END" );
+    maps\_utility::add_start( "bridge", ::misc_dummy, &"STARTS_BRIDGE" );
+    maps\_utility::add_start( "deck", ::misc_dummy, &"STARTS_DECK" );
+    maps\_utility::add_start( "hallways", ::misc_dummy, &"STARTS_HALLWAYS" );
+    maps\_utility::add_start( "cargohold", ::misc_dummy, &"STARTS_CARGOHOLD" );
+    maps\_utility::add_start( "cargohold2", ::misc_dummy, &"STARTS_CARGOHOLD2" );
+    maps\_utility::add_start( "laststand", ::misc_dummy, &"STARTS_LASTSTAND" );
+    maps\_utility::add_start( "package", ::misc_dummy, &"STARTS_PACKAGE" );
+    maps\_utility::add_start( "escape", ::misc_dummy, &"STARTS_ESCAPE" );
+    maps\_utility::add_start( "end", ::misc_dummy, &"STARTS_END" );
     setsaveddvar( "compassmaxrange", 1500 );
     level.missionfailedquote = [];
     level.missionfailedquote["slow"] = &"CARGOSHIP_YOU_WERENT_FAST_ENOUGH";
@@ -123,9 +123,9 @@ main()
     hacks_for_e3_gameplay_video();
     thread boxes_in_the_wind();
     var_4 = getentarray( "fryingpanfall", "targetname" );
-    common_scripts\utility::array_thread( var_4,::frying_pan_fall );
+    common_scripts\utility::array_thread( var_4, ::frying_pan_fall );
     common_scripts\utility::array_thread( getentarray( "stairs", "targetname" ), maps\cargoship_code::stairs );
-    common_scripts\utility::array_thread( getentarray( "computer_des", "targetname" ),::computer_destructible );
+    common_scripts\utility::array_thread( getentarray( "computer_des", "targetname" ), ::computer_destructible );
     thread maps\_wibble::setup_wibble_triggers( 0, "at_bridge", "exterior", 1, 1 );
     maps\_utility::set_console_status();
     misc_precacheinit();
@@ -141,21 +141,21 @@ main()
     switch ( level.jumptosection )
     {
         case "bridge":
-        bridge_main();
+            bridge_main();
         case "deck":
-        deck_main();
+            deck_main();
         case "hallways":
-        hallways_main();
+            hallways_main();
         case "cargohold":
-        cargohold_main();
+            cargohold_main();
         case "cargohold2":
-        thread cargohold2_main();
+            thread cargohold2_main();
         case "laststand":
-        laststand_main();
+            laststand_main();
         case "package":
-        package_main();
+            package_main();
         case "escape":
-        escape_main();
+            escape_main();
     }
 }
 
@@ -333,6 +333,7 @@ initflags()
     common_scripts\utility::flag_init( "final_sun_direction" );
     common_scripts\utility::flag_init( "deck_light_shadow" );
 }
+
 #using_animtree( "generic_human" );
 
 initial_setup()
@@ -363,7 +364,7 @@ initial_setup()
     level.heli maps\mo_fastrope::fastrope_override( 9, undefined, %bh_crew_idle_guy1 );
     level.heli maps\mo_fastrope::fastrope_override( 10, undefined, %bh_crew_idle_guy2 );
     var_2 = getentarray( "deck_rain_filter", "targetname" );
-    common_scripts\utility::array_thread( var_2,::filterzone );
+    common_scripts\utility::array_thread( var_2, ::filterzone );
     var_3 = getent( "intro_spawners", "targetname" );
     var_3 notify( "trigger" );
     wait 0.1;
@@ -386,26 +387,26 @@ initial_setup()
         switch ( var_5[var_6].seat_pos )
         {
             case 1:
-            level.heroes7["alavi"] = var_5[var_6];
-            break;
+                level.heroes7["alavi"] = var_5[var_6];
+                break;
             case 2:
-            level.heroes7["price"] = var_5[var_6];
-            break;
+                level.heroes7["price"] = var_5[var_6];
+                break;
             case 4:
-            level.heroes7["grigsby"] = var_5[var_6];
-            break;
+                level.heroes7["grigsby"] = var_5[var_6];
+                break;
             case 9:
-            level.heroes7["pilot"] = var_5[var_6];
-            break;
+                level.heroes7["pilot"] = var_5[var_6];
+                break;
             case 10:
-            level.heroes7["copilot"] = var_5[var_6];
-            break;
+                level.heroes7["copilot"] = var_5[var_6];
+                break;
             case 5:
-            level.heroes7["seat5"] = var_5[var_6];
-            break;
+                level.heroes7["seat5"] = var_5[var_6];
+                break;
             case 6:
-            level.heroes7["seat6"] = var_5[var_6];
-            break;
+                level.heroes7["seat6"] = var_5[var_6];
+                break;
         }
     }
 
@@ -491,6 +492,7 @@ intro_movie_hack()
     level waittill( "intro_movie_done" );
     level.heroes5["seat6"].name = "Pvt. Griffen";
 }
+
 #using_animtree( "vehicles" );
 
 initial_setup_vehicle_override()
@@ -504,26 +506,26 @@ bridge_main()
     switch ( level.jumpto )
     {
         case "start":
-        maps\_utility::musicplaywrapper( "cargoship_intro_music" );
-        thread common_scripts\utility::play_sound_in_space( "scn_cargoship_intro_helicopter", level.player.origin );
-        setsaveddvar( "ai_friendlyFireBlockDuration", 250 );
-        thread bridge_intro();
-        thread bridge_intro_thunder();
-        thread bridge_heroes();
-        thread bridge_heli_1();
-        thread start_physical_dof();
+            maps\_utility::musicplaywrapper( "cargoship_intro_music" );
+            thread common_scripts\utility::play_sound_in_space( "scn_cargoship_intro_helicopter", level.player.origin );
+            setsaveddvar( "ai_friendlyFireBlockDuration", 250 );
+            thread bridge_intro();
+            thread bridge_intro_thunder();
+            thread bridge_heroes();
+            thread bridge_heli_1();
+            thread start_physical_dof();
         case "bridge":
-        thread bridge_setup();
-        thread bridge_heli_2();
-        thread bridge_standoff();
+            thread bridge_setup();
+            thread bridge_heli_2();
+            thread bridge_standoff();
         case "quarters":
-        quarters_prepare_door_for_breach();
-        common_scripts\utility::flag_wait( "quarters" );
-        common_scripts\utility::flag_set( "_sea_waves" );
-        thread quarters_sleeping();
-        thread quarters_dialogue();
-        thread quarters_player_speed();
-        quarters();
+            quarters_prepare_door_for_breach();
+            common_scripts\utility::flag_wait( "quarters" );
+            common_scripts\utility::flag_set( "_sea_waves" );
+            thread quarters_sleeping();
+            thread quarters_dialogue();
+            thread quarters_player_speed();
+            quarters();
     }
 }
 
@@ -591,7 +593,7 @@ bridge_setup()
         if ( isdefined( var_1[var_2].spawner.nounload ) && var_1[var_2].spawner.nounload == 1 )
             continue;
 
-        var_3 = getnode( "seat" +var_1[var_2].seat_pos, "targetname" );
+        var_3 = getnode( "seat" + var_1[var_2].seat_pos, "targetname" );
         var_1[var_2] setgoalnode( var_3 );
         var_1[var_2].goalradius = 32;
         var_1[var_2].ignoresuppression = 1;
@@ -600,11 +602,11 @@ bridge_setup()
 
     level.heli.vehicle waittill( "reached_wait_node" );
     common_scripts\utility::flag_set( "at_bridge" );
-    thread maps\cargoship_fx::flash( 2, 4, 2, 3,( -25, -160, 0 ) );
+    thread maps\cargoship_fx::flash( 2, 4, 2, 3, ( -25, -160, 0 ) );
     level.player thread maps\_utility::play_sound_on_entity( "elm_thunder_distant" );
     level.player thread maps\_utility::play_sound_on_entity( "elm_thunder_strike" );
     wait 4.5;
-    thread maps\cargoship_fx::flash( 3, 4, 2, 3,( -25, -110, 0 ) );
+    thread maps\cargoship_fx::flash( 3, 4, 2, 3, ( -25, -110, 0 ) );
     level.player thread maps\_utility::play_sound_on_entity( "elm_thunder_distant" );
     level.player thread maps\_utility::play_sound_on_entity( "elm_thunder_strike" );
 }
@@ -653,7 +655,7 @@ bridge_heli_2()
     common_scripts\utility::flag_set( "cargoship_ocean_scenario_end" );
     wait 4;
     level.heli.model maps\cargoship_code::heli_searchlight_on();
-    var_0 = spawn( "script_origin",( 3184, 152, 364 ) );
+    var_0 = spawn( "script_origin", ( 3184, 152, 364 ) );
     var_0.targetname = "bridge_fake_spottarget";
     level.heli.model thread maps\cargoship_code::heli_searchlight_target( "targetname", "bridge_fake_spottarget" );
     wait 1;
@@ -712,7 +714,7 @@ bridge_heroes()
     thread maps\cargoship_code::playermaskputon();
     wait 1;
     maps\_utility::delaythread( 1.4, maps\cargoship_lighting::apply_lighting_pass_cargoship, "cargoship_exterior_helitrans_vision", 2 );
-    level.heroes5["price"] maps\_utility::delaythread( 1.5,::setheadmodel, "head_sas_ct_assault_price_mask_down_nobeard" );
+    level.heroes5["price"] maps\_utility::delaythread( 1.5, ::setheadmodel, "head_sas_ct_assault_price_mask_down_nobeard" );
     maps\_utility::delaythread( 9.5, maps\cargoship_lighting::apply_lighting_pass_cargoship, "cargoship_exterior", 0 );
     wait 1.7;
     thread maps\mo_tools::radio_msg_stack( "cargoship_pri_crewexpend" );
@@ -728,7 +730,7 @@ bridge_standoff()
     var_1 = getent( "start_bridge_standoff", "targetname" );
     var_2 = getent( "bridge_damage_trig", "targetname" );
     var_2 thread bridge_standoff_damage();
-    common_scripts\utility::array_thread( getentarray( "bridge_standoff_guys", "targetname" ), maps\_utility::add_spawn_function,::bridge_standoff_behavior );
+    common_scripts\utility::array_thread( getentarray( "bridge_standoff_guys", "targetname" ), maps\_utility::add_spawn_function, ::bridge_standoff_behavior );
     level.enemies = [];
     var_0 notify( "trigger" );
     var_1 waittill( "trigger" );
@@ -748,7 +750,7 @@ bridge_standoff()
     level.enemies["bridge_tv"] notify( "bridge_react" );
     wait 0.45;
     level.enemies["bridge_stand1"] notify( "bridge_react" );
-    common_scripts\utility::array_thread( getentarray( "bridge_standoff_paperstacks", "targetname" ),::bridge_standoff_paperstacks_damage );
+    common_scripts\utility::array_thread( getentarray( "bridge_standoff_paperstacks", "targetname" ), ::bridge_standoff_paperstacks_damage );
     level waittill( "ai_clear_dialog_done" );
     level.heroes5["price"].disableplayeradsloscheck = 0;
     level.heroes5["price"].grenadeawareness = 1;
@@ -758,7 +760,7 @@ bridge_standoff()
 bridge_standoff_paperstacks_damage()
 {
     var_0 = ( 0, 0, 15 );
-    var_1 = self.origin +var_0;
+    var_1 = self.origin + var_0;
     var_2 = spawnfx( level._effect["destp_office_paper_stack_cgoshp"], var_1 );
     triggerfx( var_2 );
     wait 0.1;
@@ -777,6 +779,7 @@ bridge_standoff_damage()
 
     common_scripts\utility::flag_set( "bridgefight" );
 }
+
 #using_animtree( "chair" );
 
 bridge_standoff_chair( var_0 )
@@ -833,25 +836,25 @@ bridge_standoff_behavior()
     self endon( "death_by_player" );
     self waittill( "bridge_react" );
     var_2 = getanimlength( level.scr_anim[self.animname]["react"] );
-    var_3 = var_2 -0.5;
+    var_3 = var_2 - 0.5;
 
     switch ( self.animname )
     {
         case "bridge_clipboard":
-        var_0 thread maps\_utility::notify_delay( "stoploop", 0.25 );
-        var_0 maps\_utility::delaythread( 0.25, maps\_anim::anim_single_solo, self, "react" );
-        break;
+            var_0 thread maps\_utility::notify_delay( "stoploop", 0.25 );
+            var_0 maps\_utility::delaythread( 0.25, maps\_anim::anim_single_solo, self, "react" );
+            break;
         default:
-        var_0 notify( "stoploop" );
-        var_0 thread maps\_anim::anim_single_solo( self, "react" );
-        break;
+            var_0 notify( "stoploop" );
+            var_0 thread maps\_anim::anim_single_solo( self, "react" );
+            break;
     }
 
     switch ( self.animname )
     {
         case "bridge_capt":
-        maps\_utility::delaythread( 1.5, maps\_utility::play_sound_on_entity, "cargoship_rus_huh2" );
-        break;
+            maps\_utility::delaythread( 1.5, maps\_utility::play_sound_on_entity, "cargoship_rus_huh2" );
+            break;
     }
 
     wait( var_3 );
@@ -860,29 +863,29 @@ bridge_standoff_behavior()
     switch ( self.animname )
     {
         case "bridge_capt":
-        level.heroes5["alavi"] thread maps\cargoship_code::execute_ai_solo( self, 0.1, 6, 1 );
-        wait 0.5;
-        break;
+            level.heroes5["alavi"] thread maps\cargoship_code::execute_ai_solo( self, 0.1, 6, 1 );
+            wait 0.5;
+            break;
         case "bridge_tv":
-        level.heroes5["alavi"] thread maps\cargoship_code::execute_ai_solo( self, 0, 6, 1 );
-        wait 0.5;
-        break;
+            level.heroes5["alavi"] thread maps\cargoship_code::execute_ai_solo( self, 0, 6, 1 );
+            wait 0.5;
+            break;
         case "bridge_stand1":
-        wait 0.25;
-        level.heroes5["price"] thread maps\cargoship_code::execute_ai_solo( self, 0.1, 6, 1 );
-        level.heroes5["alavi"] maps\_utility::delaythread( 0.25, maps\cargoship_code::execute_ai_solo, self, 0, 6, 1 );
-        wait 0.25;
-        break;
+            wait 0.25;
+            level.heroes5["price"] thread maps\cargoship_code::execute_ai_solo( self, 0.1, 6, 1 );
+            level.heroes5["alavi"] maps\_utility::delaythread( 0.25, maps\cargoship_code::execute_ai_solo, self, 0, 6, 1 );
+            wait 0.25;
+            break;
         case "bridge_clipboard":
-        level.heroes5["price"] thread maps\cargoship_code::execute_ai_solo( self, 0, 6, 1 );
-        wait 0.75;
-        break;
+            level.heroes5["price"] thread maps\cargoship_code::execute_ai_solo( self, 0, 6, 1 );
+            wait 0.75;
+            break;
     }
 
     self notify( "already_dying" );
     self stopanimscripted();
     self kill();
-    thread common_scripts\utility::play_sound_in_space( "generic_death_russian_" +randomintrange( 1, 8 ), var_0.origin );
+    thread common_scripts\utility::play_sound_in_space( "generic_death_russian_" + randomintrange( 1, 8 ), var_0.origin );
 }
 
 bridge_standoff_behavior_earlydeath( var_0 )
@@ -902,7 +905,7 @@ bridge_standoff_behavior_earlydeath( var_0 )
     self notify( "death_by_player" );
     self stopanimscripted();
     self kill();
-    thread common_scripts\utility::play_sound_in_space( "generic_death_russian_" +randomintrange( 1, 8 ), var_0.origin );
+    thread common_scripts\utility::play_sound_in_space( "generic_death_russian_" + randomintrange( 1, 8 ), var_0.origin );
 }
 
 quarters_sleeping()
@@ -915,7 +918,7 @@ quarters_sleeping()
     {
         var_2[var_3] = var_1[var_3] stalingradspawn();
         maps\_utility::spawn_failed( var_2[var_3] );
-        var_2[var_3].animname = "sleeper_" +var_3;
+        var_2[var_3].animname = "sleeper_" + var_3;
         var_2[var_3].ignoreme = 1;
         var_2[var_3].grenadeammo = 0;
         var_2[var_3].health = 1;
@@ -960,6 +963,7 @@ quarters_sleeping_player()
     wait 1;
     common_scripts\utility::flag_set( "deck" );
 }
+
 #using_animtree( "generic_human" );
 
 quarters_sleeping_death( var_0 )
@@ -969,7 +973,7 @@ quarters_sleeping_death( var_0 )
     self waittill( "damage", var_1, var_2, var_3, var_4, var_5 );
     level notify( "sleeping_guys_wake" );
     self notify( "death", var_2, var_5 );
-    thread common_scripts\utility::play_sound_in_space( "generic_pain_russian_" +randomintrange( 1, 8 ), self.origin );
+    thread common_scripts\utility::play_sound_in_space( "generic_pain_russian_" + randomintrange( 1, 8 ), self.origin );
 
     if ( isdefined( level.cheatstates ) && isdefined( level.cheatstates["sf_use_tire_explosion"] ) && level.cheatstates["sf_use_tire_explosion"] == 1 )
         return;
@@ -1047,7 +1051,7 @@ quarters_heli()
 
 quarters_redlightatstairs()
 {
-    var_0 = spawn( "script_model",( 2811, -346, 299 ) );
+    var_0 = spawn( "script_model", ( 2811, -346, 299 ) );
     var_0 setmodel( "tag_origin" );
     var_0 hide();
     playfxontag( level._effect["aircraft_light_cockpit_red"], var_0, "tag_origin" );
@@ -1084,7 +1088,7 @@ quarters()
     var_2[var_2.size] = level.bridge_door_anim;
     var_3 = getent( level.bridge_door_anim.target, "targetname" );
     var_3 connectpaths();
-    var_3 linkto( level.bridge_door_anim, "hinge_jnt",( 0, 0, 0 ),( 0, 90, 0 ) );
+    var_3 linkto( level.bridge_door_anim, "hinge_jnt", ( 0, 0, 0 ), ( 0, 90, 0 ) );
     var_1 maps\_anim::anim_single( var_2, "bridge_breach" );
     level.heroes5["price"].animplaybackrate = 1.0816;
     level.heroes5["alavi"].animplaybackrate = 1.0816;
@@ -1180,7 +1184,7 @@ quarter_drunk_bottle_think( var_0 )
 quarter_drunk_bottle_brokefx( var_0, var_1 )
 {
     var_1 delete();
-    var_2 = vectornormalize( level.player.origin -self gettagorigin( "tag_inhand" ) );
+    var_2 = vectornormalize( level.player.origin - self gettagorigin( "tag_inhand" ) );
     playfx( level._effect["vodka_bottle"], var_0, var_2 );
     common_scripts\utility::play_sound_in_space( "cgo_glass_bottle_break", var_0 );
 }
@@ -1201,15 +1205,15 @@ quarters_drunk_bottle_falling( var_0 )
     var_3 = ( 0, 0, 1 );
     var_4 = 0.5;
     var_0 unlink();
-    var_5 = vectornormalize( self gettagorigin( "tag_inhand" ) -level.player.origin );
-    var_6 = var_1 -var_0.origin;
+    var_5 = vectornormalize( self gettagorigin( "tag_inhand" ) - level.player.origin );
+    var_6 = var_1 - var_0.origin;
     var_6 = var_6 * var_4;
     var_7 = common_scripts\utility::drop_to_ground( var_0.origin, 0 );
     var_7 = ( 0, 0, var_7[2] );
 
     for (;;)
     {
-        var_8 = var_0.origin + ( var_6 -var_2 * var_3 );
+        var_8 = var_0.origin + ( var_6 - var_2 * var_3 );
 
         if ( var_8[2] < var_7[2] )
         {
@@ -1220,7 +1224,7 @@ quarters_drunk_bottle_falling( var_0 )
         }
 
         var_0 moveto( var_8, 0.1 );
-        var_2 = var_2 +3;
+        var_2 = var_2 + 3;
         wait 0.1;
     }
 
@@ -1275,7 +1279,7 @@ quarters_drunk_death( var_0, var_1 )
     if ( var_1 )
         self kill();
 
-    thread common_scripts\utility::play_sound_in_space( "generic_death_russian_" +randomintrange( 1, 8 ), var_0.origin );
+    thread common_scripts\utility::play_sound_in_space( "generic_death_russian_" + randomintrange( 1, 8 ), var_0.origin );
 }
 
 quarters_price()
@@ -1304,7 +1308,7 @@ quarters_price()
     self setgoalnode( var_1 );
     self.goalradius = var_1.radius;
 
-    if ( lengthsquared( self.origin -var_0.origin ) < 25 )
+    if ( lengthsquared( self.origin - var_0.origin ) < 25 )
     {
         var_3 = common_scripts\utility::getstruct( "PriceKillsDrunkGuy", "targetname" );
         var_3 thread maps\_anim::anim_single_solo( self, "stair_cover_exit" );
@@ -1317,7 +1321,7 @@ quarters_price()
 
     while ( isalive( level.quartersdrunk ) )
     {
-        if ( lengthsquared( self.origin -var_1.origin ) < 25 )
+        if ( lengthsquared( self.origin - var_1.origin ) < 25 )
         {
             var_4 = randomintrange( 3, 6 );
             maps\cargoship_code::burstshot( var_4, level.quartersdrunk.spinetarget.origin );
@@ -1448,22 +1452,22 @@ deck_main()
     switch ( var_0 )
     {
         case "deck":
-        thread deck_heli();
-        common_scripts\utility::flag_wait( "deck" );
-        setsaveddvar( "ai_friendlyFireBlockDuration", 2000 );
-        common_scripts\utility::flag_set( "deck_heli" );
-        thread deck_start();
-        common_scripts\utility::array_thread( getentarray( "aftdeck_level2_enemies", "targetname" ), maps\_utility::add_spawn_function,::deck_aftdeck_enemies );
-        common_scripts\utility::array_thread( getentarray( "aftdeck_level3_runners", "targetname" ), maps\_utility::add_spawn_function,::deck_aftdeck_runners );
-        common_scripts\utility::array_thread( getentarray( "deck2_platform", "targetname" ), maps\_utility::add_spawn_function,::deck_enemies_logic );
-        common_scripts\utility::array_thread( getentarray( "deck_flags", "script_noteworthy" ), common_scripts\utility::trigger_on );
-        deck_dialogue1();
-        common_scripts\utility::flag_wait( "windows_got_company_line_before" );
-        level.player.ignoreme = 1;
-        common_scripts\utility::flag_wait( "windows_got_company_line" );
-        wait 2;
-        var_1 = getent( "aftdeck_level3_runners", "target" );
-        var_1 notify( "trigger" );
+            thread deck_heli();
+            common_scripts\utility::flag_wait( "deck" );
+            setsaveddvar( "ai_friendlyFireBlockDuration", 2000 );
+            common_scripts\utility::flag_set( "deck_heli" );
+            thread deck_start();
+            common_scripts\utility::array_thread( getentarray( "aftdeck_level2_enemies", "targetname" ), maps\_utility::add_spawn_function, ::deck_aftdeck_enemies );
+            common_scripts\utility::array_thread( getentarray( "aftdeck_level3_runners", "targetname" ), maps\_utility::add_spawn_function, ::deck_aftdeck_runners );
+            common_scripts\utility::array_thread( getentarray( "deck2_platform", "targetname" ), maps\_utility::add_spawn_function, ::deck_enemies_logic );
+            common_scripts\utility::array_thread( getentarray( "deck_flags", "script_noteworthy" ), common_scripts\utility::trigger_on );
+            deck_dialogue1();
+            common_scripts\utility::flag_wait( "windows_got_company_line_before" );
+            level.player.ignoreme = 1;
+            common_scripts\utility::flag_wait( "windows_got_company_line" );
+            wait 2;
+            var_1 = getent( "aftdeck_level3_runners", "target" );
+            var_1 notify( "trigger" );
     }
 }
 
@@ -1678,7 +1682,7 @@ deck_heroes( var_0, var_1 )
         var_2 = spawn( "script_origin", self.origin );
         var_2.angles = ( 0, 0, 0 );
         var_2 thread maps\_anim::anim_single_solo( self, "grigsturn" );
-        wait( getanimlength( maps\_utility::getanim( "grigsturn" ) ) -0.2 );
+        wait( getanimlength( maps\_utility::getanim( "grigsturn" ) ) - 0.2 );
         self stopanimscripted();
         var_2.origin = self.origin;
         var_2.angles = ( 0, 180, 0 );
@@ -1686,14 +1690,14 @@ deck_heroes( var_0, var_1 )
         common_scripts\utility::flag_set( "_sea_bob" );
         thread maps\_utility::flag_set_delayed( "walk_deck", 1.5 );
         thread maps\mo_tools::radio_msg_stack( "cargoship_pri_fanout" );
-        wait( getanimlength( maps\_utility::getanim( "grigstop" ) ) -0.2 );
+        wait( getanimlength( maps\_utility::getanim( "grigstop" ) ) - 0.2 );
         self stopanimscripted();
         self setgoalpos( self.origin );
         self.goalradius = 4;
         wait 1.5;
         var_2.origin = self.origin;
         var_2 thread maps\_anim::anim_single_solo( self, "grigsgo" );
-        wait( getanimlength( maps\_utility::getanim( "grigsgo" ) ) -0.2 );
+        wait( getanimlength( maps\_utility::getanim( "grigsgo" ) ) - 0.2 );
         self stopanimscripted();
         maps\mo_tools::enable_cqbwalk_ign_demo_wrapper();
         var_2 delete();
@@ -1771,8 +1775,7 @@ deck_heroes( var_0, var_1 )
         maps\_utility::radio_dialogue( "cargoship_pri_tangos2ndfl" );
         common_scripts\utility::flag_set( "heli_shoot_deck_windows" );
     }
-    else
-    if ( !common_scripts\utility::flag( "windows_got_company_line_before" ) )
+    else if ( !common_scripts\utility::flag( "windows_got_company_line_before" ) )
     {
         common_scripts\utility::flag_set( "windows_got_company_line_before" );
         maps\_utility::radio_dialogue( "cargoship_grg_gotcompany" );
@@ -1794,7 +1797,7 @@ deck_heli()
     common_scripts\utility::flag_wait( "deck_drop" );
     thread maps\_utility::radio_dialogue( "cargoship_hp1_forwarddeckradio" );
     level.heli.model.spotlight_default_target = spawn( "script_origin", level.heli.model gettagorigin( "tag_barrel" ) );
-    level.heli.model.spotlight_default_target linkto( level.heli.model, "tag_turret",( 0, 0, -256 ),( 0, 0, 0 ) );
+    level.heli.model.spotlight_default_target linkto( level.heli.model, "tag_turret", ( 0, 0, -256 ), ( 0, 0, 0 ) );
     level.heli.model thread maps\cargoship_code::heli_deckdrop_target();
     level.heli notify( "unload_rest" );
     wait 2;
@@ -1833,9 +1836,9 @@ deck_heli()
     level.heli.vehicle settargetyaw( 110 );
     level.heli.vehicle setgoalyaw( 110 );
     thread maps\_utility::radio_dialogue( "cargoship_hp1_copyengaging" );
-    var_1 = spawn( "script_origin",( -2324, 32, 256 ) );
+    var_1 = spawn( "script_origin", ( -2324, 32, 256 ) );
     var_1.targetname = "aftdeck_helispot_target";
-    var_2 = spawn( "script_origin",( -2324, -416, 270 ) );
+    var_2 = spawn( "script_origin", ( -2324, -416, 270 ) );
     var_2.targetname = "attack_target";
     level.heli.model thread maps\cargoship_code::heli_searchlight_target( "targetname", "attack_target" );
     thread maps\cargoship_code::heli_flypath( common_scripts\utility::getstruct( "deck_helinode_win", "targetname" ) );
@@ -1851,7 +1854,7 @@ deck_heli()
     level.heli.model thread maps\cargoship_code::heli_minigun_fake_deck_fire();
     var_4 = spawn( "script_model", level.heli.model.minigun["left"] gettagorigin( "tag_flash" ) );
     var_4 setmodel( "tag_origin" );
-    var_4 linkto( level.heli.model.minigun["left"], "tag_flash",( -30, 0, 0 ),( 0, 0, 0 ) );
+    var_4 linkto( level.heli.model.minigun["left"], "tag_flash", ( -30, 0, 0 ), ( 0, 0, 0 ) );
     var_4 thread maps\cargoship_code::deck_heli_minigun_fx();
     thread maps\cargoship_code::deck_kill_lights();
     wait( var_3 );
@@ -1917,79 +1920,79 @@ hallways_main()
     switch ( var_0 )
     {
         case "hallways":
-        common_scripts\utility::flag_wait( "hallways" );
-        level.player.ignoreme = 0;
-        var_1 = getaiarray( "axis" );
+            common_scripts\utility::flag_wait( "hallways" );
+            level.player.ignoreme = 0;
+            var_1 = getaiarray( "axis" );
 
-        for ( var_2 = 0; var_2 < var_1.size; var_2++ )
-            var_1[var_2] kill();
+            for ( var_2 = 0; var_2 < var_1.size; var_2++ )
+                var_1[var_2] kill();
 
-        thread hallways_player_speed();
-        maps\_utility::autosave_by_name( "hallways_breach" );
-        level.heroes5["price"].baseaccuracy = level.heroes5["price"].cgo_old_baseaccuracy;
-        level.heroes5["alavi"].baseaccuracy = level.heroes5["price"].cgo_old_baseaccuracy;
-        level.heroes5["grigsby"].baseaccuracy = level.heroes5["price"].cgo_old_baseaccuracy;
-        level.heroes5["price"].accuracy = level.heroes5["price"].cgo_old_accuracy;
-        level.heroes5["alavi"].accuracy = level.heroes5["price"].cgo_old_accuracy;
-        level.heroes5["grigsby"].accuracy = level.heroes5["price"].cgo_old_accuracy;
-        level.heroes5["price"].ignoreme = 0;
-        level.heroes5["alavi"].ignoreme = 0;
-        level.heroes5["grigsby"].ignoreme = 0;
-        hallways_breach();
-        common_scripts\utility::array_thread( getentarray( "hallways_lower_runners", "targetname" ), maps\_utility::add_spawn_function,::hallways_lower_runners );
-        common_scripts\utility::array_thread( getentarray( "hallways_lower_runners2", "targetname" ), maps\_utility::add_spawn_function,::hallways_lower_runners2 );
-        thread hallways_lower_runners1_death();
-        thread hallways_lower_runners_deathnotify();
-        thread hallways_dialogue();
-        var_3 = [];
-        var_3["alavi"] = "cargoship_gm1_clearleft";
-        var_3["grigsby"] = "cargoship_grg_clearright";
-        var_3["price"] = undefined;
-        maps\_utility::autosave_by_name( "hallways" );
-        maps\cargoship_code::hallways_heroes( "hallways_enter", "hallways_corner", var_3 );
-        thread maps\mo_tools::radio_msg_stack( "cargoship_pri_hallwayclear" );
-        level.heroes3["price"] maps\_utility::delaythread( 1, maps\_utility::handsignal, "go", 1 );
-        thread maps\mo_tools::radio_msg_stack( "cargoship_pri_moveup" );
-        var_3["alavi"] = "cargoship_gm1_clearright";
-        var_3["grigsby"] = undefined;
-        var_3["price"] = undefined;
-        wait 2;
-        maps\cargoship_code::hallways_heroes( "hallways_corner", "hallways_stairs", var_3 );
-        thread maps\mo_tools::radio_msg_stack( "cargoship_pri_stairsclear" );
-        common_scripts\utility::flag_wait( "hallways_bottom_stairs" );
-        setsaveddvar( "ai_friendlyFireBlockDuration", 0 );
-        maps\_utility::autosave_by_name( "hallways_stairs" );
-        level.heroes3["grigsby"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
-        level.heroes3["price"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
-        level.heroes3["alavi"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
-        thread maps\cargoship_code::hallways_heroes( "hallways_stairs", "hallways_lowerhall_guys" );
-        cargoship_enablealliesreload();
-        var_4 = spawn( "script_origin",( -2740, -20, -116 ) );
-        var_5 = spawn( "script_origin",( -2740, -20, -98 ) );
-        level.heroes3["grigsby"] setentitytarget( var_5 );
-        level.heroes3["price"] setentitytarget( var_4 );
-        common_scripts\utility::flag_wait( "hallways_lowerhall" );
-        level.heroes3["grigsby"] clearentitytarget();
-        level.heroes3["price"] clearentitytarget();
-        var_4 delete();
-        var_5 delete();
-        common_scripts\utility::flag_wait( "hallways_lowerhall_guys" );
-        cargoship_disablealliesreload();
-        thread maps\_utility::battlechatter_off( "axis" );
-        maps\_utility::delaythread( 2, maps\_utility::autosave_by_name, "hallways_lowerhall" );
-        maps\_utility::delaythread( 0.5, maps\mo_tools::radio_msg_stack, "cargoship_grg_tangodown" );
-        maps\_utility::delaythread( 1, maps\mo_tools::radio_msg_stack, "cargoship_pri_hallwayclear" );
-        maps\_utility::delaythread( 6, maps\mo_tools::radio_msg_stack, "cargoship_pri_checkcorners" );
-        var_3["alavi"] = "cargoship_gm1_clearleft";
-        var_3["grigsby"] = "cargoship_grg_readysir";
-        var_3["price"] = undefined;
-        var_6["alavi"] = "crouch2run";
-        var_6["grigsby"] = undefined;
-        var_6["price"] = undefined;
-        maps\cargoship_code::hallways_heroes( "hallways_lowerhall", "hallways_lowerhall2", var_3 );
-        thread maps\mo_tools::radio_msg_stack( "cargoship_pri_moveup" );
-        common_scripts\utility::flag_set( "hallways_lowerhall2" );
-        thread disable_ik_trigger();
+            thread hallways_player_speed();
+            maps\_utility::autosave_by_name( "hallways_breach" );
+            level.heroes5["price"].baseaccuracy = level.heroes5["price"].cgo_old_baseaccuracy;
+            level.heroes5["alavi"].baseaccuracy = level.heroes5["price"].cgo_old_baseaccuracy;
+            level.heroes5["grigsby"].baseaccuracy = level.heroes5["price"].cgo_old_baseaccuracy;
+            level.heroes5["price"].accuracy = level.heroes5["price"].cgo_old_accuracy;
+            level.heroes5["alavi"].accuracy = level.heroes5["price"].cgo_old_accuracy;
+            level.heroes5["grigsby"].accuracy = level.heroes5["price"].cgo_old_accuracy;
+            level.heroes5["price"].ignoreme = 0;
+            level.heroes5["alavi"].ignoreme = 0;
+            level.heroes5["grigsby"].ignoreme = 0;
+            hallways_breach();
+            common_scripts\utility::array_thread( getentarray( "hallways_lower_runners", "targetname" ), maps\_utility::add_spawn_function, ::hallways_lower_runners );
+            common_scripts\utility::array_thread( getentarray( "hallways_lower_runners2", "targetname" ), maps\_utility::add_spawn_function, ::hallways_lower_runners2 );
+            thread hallways_lower_runners1_death();
+            thread hallways_lower_runners_deathnotify();
+            thread hallways_dialogue();
+            var_3 = [];
+            var_3["alavi"] = "cargoship_gm1_clearleft";
+            var_3["grigsby"] = "cargoship_grg_clearright";
+            var_3["price"] = undefined;
+            maps\_utility::autosave_by_name( "hallways" );
+            maps\cargoship_code::hallways_heroes( "hallways_enter", "hallways_corner", var_3 );
+            thread maps\mo_tools::radio_msg_stack( "cargoship_pri_hallwayclear" );
+            level.heroes3["price"] maps\_utility::delaythread( 1, maps\_utility::handsignal, "go", 1 );
+            thread maps\mo_tools::radio_msg_stack( "cargoship_pri_moveup" );
+            var_3["alavi"] = "cargoship_gm1_clearright";
+            var_3["grigsby"] = undefined;
+            var_3["price"] = undefined;
+            wait 2;
+            maps\cargoship_code::hallways_heroes( "hallways_corner", "hallways_stairs", var_3 );
+            thread maps\mo_tools::radio_msg_stack( "cargoship_pri_stairsclear" );
+            common_scripts\utility::flag_wait( "hallways_bottom_stairs" );
+            setsaveddvar( "ai_friendlyFireBlockDuration", 0 );
+            maps\_utility::autosave_by_name( "hallways_stairs" );
+            level.heroes3["grigsby"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
+            level.heroes3["price"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
+            level.heroes3["alavi"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
+            thread maps\cargoship_code::hallways_heroes( "hallways_stairs", "hallways_lowerhall_guys" );
+            cargoship_enablealliesreload();
+            var_4 = spawn( "script_origin", ( -2740, -20, -116 ) );
+            var_5 = spawn( "script_origin", ( -2740, -20, -98 ) );
+            level.heroes3["grigsby"] setentitytarget( var_5 );
+            level.heroes3["price"] setentitytarget( var_4 );
+            common_scripts\utility::flag_wait( "hallways_lowerhall" );
+            level.heroes3["grigsby"] clearentitytarget();
+            level.heroes3["price"] clearentitytarget();
+            var_4 delete();
+            var_5 delete();
+            common_scripts\utility::flag_wait( "hallways_lowerhall_guys" );
+            cargoship_disablealliesreload();
+            thread maps\_utility::battlechatter_off( "axis" );
+            maps\_utility::delaythread( 2, maps\_utility::autosave_by_name, "hallways_lowerhall" );
+            maps\_utility::delaythread( 0.5, maps\mo_tools::radio_msg_stack, "cargoship_grg_tangodown" );
+            maps\_utility::delaythread( 1, maps\mo_tools::radio_msg_stack, "cargoship_pri_hallwayclear" );
+            maps\_utility::delaythread( 6, maps\mo_tools::radio_msg_stack, "cargoship_pri_checkcorners" );
+            var_3["alavi"] = "cargoship_gm1_clearleft";
+            var_3["grigsby"] = "cargoship_grg_readysir";
+            var_3["price"] = undefined;
+            var_6["alavi"] = "crouch2run";
+            var_6["grigsby"] = undefined;
+            var_6["price"] = undefined;
+            maps\cargoship_code::hallways_heroes( "hallways_lowerhall", "hallways_lowerhall2", var_3 );
+            thread maps\mo_tools::radio_msg_stack( "cargoship_pri_moveup" );
+            common_scripts\utility::flag_set( "hallways_lowerhall2" );
+            thread disable_ik_trigger();
     }
 }
 
@@ -2092,7 +2095,7 @@ hallways_breach_moveout( var_0, var_1 )
     {
         var_3 = getanimlength( maps\_utility::getanim( var_0 ) );
         thread maps\_anim::anim_single_solo( self, var_0 );
-        wait( var_3 -0.2 );
+        wait( var_3 - 0.2 );
     }
 
     self setgoalnode( var_1 );
@@ -2241,7 +2244,7 @@ hallways_breach_alavi_hack( var_0 )
     self notify( "stop_loop" );
     thread maps\_anim::anim_generic( var_0, "stand2run" );
     var_1 = getanimlength( maps\_utility::getanim_generic( "stand2run" ) );
-    wait( var_1 -0.2 );
+    wait( var_1 - 0.2 );
     var_0 stopanimscripted();
 }
 
@@ -2304,130 +2307,130 @@ cargohold_main()
     switch ( var_0 )
     {
         case "cargohold":
-        heroes_remove_bullet_whiz();
-        thread cargohold1_pulp_fiction_think();
-        var_1 = getentarray( "pulp_fiction_guy", "script_noteworthy" );
-        common_scripts\utility::array_thread( var_1, maps\_utility::add_spawn_function,::cargohold1_pulp_fiction_guy );
-        common_scripts\utility::flag_wait( "hallways_lowerhall2" );
-        level.heroes3["grigsby"].wantshotgun = 1;
-        thread maps\cargoship_code::player_speed_set_cargoship( 137, 1 );
-        level.heroes3["price"] pushplayer( 1 );
-        level.heroes3["alavi"] pushplayer( 1 );
-        level.heroes3["grigsby"] pushplayer( 1 );
-        var_2 = [];
-        var_3 = [];
-        var_4 = [];
-        var_2["alavi"] = undefined;
+            heroes_remove_bullet_whiz();
+            thread cargohold1_pulp_fiction_think();
+            var_1 = getentarray( "pulp_fiction_guy", "script_noteworthy" );
+            common_scripts\utility::array_thread( var_1, maps\_utility::add_spawn_function, ::cargohold1_pulp_fiction_guy );
+            common_scripts\utility::flag_wait( "hallways_lowerhall2" );
+            level.heroes3["grigsby"].wantshotgun = 1;
+            thread maps\cargoship_code::player_speed_set_cargoship( 137, 1 );
+            level.heroes3["price"] pushplayer( 1 );
+            level.heroes3["alavi"] pushplayer( 1 );
+            level.heroes3["grigsby"] pushplayer( 1 );
+            var_2 = [];
+            var_3 = [];
+            var_4 = [];
+            var_2["alavi"] = undefined;
 
-        if ( level.jumpto == "cargohold" )
-            var_2["grigsby"] = undefined;
-        else
-            var_2["grigsby"] = "stand2run";
+            if ( level.jumpto == "cargohold" )
+                var_2["grigsby"] = undefined;
+            else
+                var_2["grigsby"] = "stand2run";
 
-        var_2["price"] = undefined;
-        var_1 = getentarray( "cargohold1_flashed_enemies", "targetname" );
-        common_scripts\utility::array_thread( var_1, maps\_utility::add_spawn_function,::cargohold1_flashed_enemies );
-        thread cargohold1_flashed_enemies_death();
-        var_3["price"] = 2.25;
-        var_3["alavi"] = 0;
-        var_3["grigsby"] = 1.25;
-        thread maps\cargoship_code::hallways_heroes( "hallways_lowerhall2", "cargoholds_1_enter", undefined, var_3, var_2 );
-        setsaveddvar( "ai_friendlyFireBlockDuration", 2000 );
-        common_scripts\utility::array_thread( level.heroes3, maps\mo_tools::disable_cqbwalk_ign_demo_wrapper );
-        level.heroes3["price"].a.cqbchangedontmodifyinterval = 1;
-        level.heroes3["price"].interval = 0;
-        level.heroes3["price"].a.disablepain = 1;
-        level.heroes3["alavi"].a.disablepain = 1;
-        level.heroes3["grigsby"].a.disablepain = 1;
-        level.heroes3["price"] setisignoringgrenades( 1 );
-        level.heroes3["alavi"] setisignoringgrenades( 1 );
-        level.heroes3["grigsby"] setisignoringgrenades( 1 );
-        level.heroes3["alavi"] thread disable_turns_until_duration_or_flag( 3, "cargoholds_1_enter" );
-        cargohold_flash();
-        level.heroes3["price"].a.cqbchangedontmodifyinterval = 0;
-        level.heroes3["price"].interval = 96;
-        level.heroes3["grigsby"] pushplayer( 0 );
-        level.heroes3["grigsby"].dontpushplayer = 1;
-        level.heroes3["price"].ignoreme = 0;
-        level.heroes3["alavi"].ignoreme = 0;
-        level.heroes3["grigsby"].ignoreme = 0;
+            var_2["price"] = undefined;
+            var_1 = getentarray( "cargohold1_flashed_enemies", "targetname" );
+            common_scripts\utility::array_thread( var_1, maps\_utility::add_spawn_function, ::cargohold1_flashed_enemies );
+            thread cargohold1_flashed_enemies_death();
+            var_3["price"] = 2.25;
+            var_3["alavi"] = 0;
+            var_3["grigsby"] = 1.25;
+            thread maps\cargoship_code::hallways_heroes( "hallways_lowerhall2", "cargoholds_1_enter", undefined, var_3, var_2 );
+            setsaveddvar( "ai_friendlyFireBlockDuration", 2000 );
+            common_scripts\utility::array_thread( level.heroes3, maps\mo_tools::disable_cqbwalk_ign_demo_wrapper );
+            level.heroes3["price"].a.cqbchangedontmodifyinterval = 1;
+            level.heroes3["price"].interval = 0;
+            level.heroes3["price"].a.disablepain = 1;
+            level.heroes3["alavi"].a.disablepain = 1;
+            level.heroes3["grigsby"].a.disablepain = 1;
+            level.heroes3["price"] setisignoringgrenades( 1 );
+            level.heroes3["alavi"] setisignoringgrenades( 1 );
+            level.heroes3["grigsby"] setisignoringgrenades( 1 );
+            level.heroes3["alavi"] thread disable_turns_until_duration_or_flag( 3, "cargoholds_1_enter" );
+            cargohold_flash();
+            level.heroes3["price"].a.cqbchangedontmodifyinterval = 0;
+            level.heroes3["price"].interval = 96;
+            level.heroes3["grigsby"] pushplayer( 0 );
+            level.heroes3["grigsby"].dontpushplayer = 1;
+            level.heroes3["price"].ignoreme = 0;
+            level.heroes3["alavi"].ignoreme = 0;
+            level.heroes3["grigsby"].ignoreme = 0;
 
-        if ( common_scripts\utility::flag( "cargoholds_1_enter" ) )
-        {
+            if ( common_scripts\utility::flag( "cargoholds_1_enter" ) )
+            {
+                var_2["alavi"] = undefined;
+                var_2["grigsby"] = undefined;
+                var_2["price"] = undefined;
+                var_3["price"] = 0.1;
+                var_3["alavi"] = 0;
+                var_3["grigsby"] = 1.5;
+            }
+            else
+            {
+                var_2["alavi"] = "cornerleft8";
+                var_2["grigsby"] = undefined;
+                var_2["price"] = "cornerleft8";
+                var_3["price"] = 0.35;
+                var_3["alavi"] = 0;
+                var_3["grigsby"] = 1.7;
+            }
+
+            level.heroes3["alavi"] notify( "stop_loop" );
+            level.heroes3["price"] notify( "stop_loop" );
+            level.heroes3["alavi"] stopanimscripted();
+            level.heroes3["price"] stopanimscripted();
+            thread maps\cargoship_code::hallways_heroes( "cargoholds_1_enter", "cargoholds_1_enter_clear", undefined, var_3, var_2 );
+
+            if ( common_scripts\utility::flag( "cargoholds_1_enter_clear" ) )
+            {
+                var_3["price"] = 0.35;
+                var_3["alavi"] = 0;
+                var_3["grigsby"] = 1.7;
+            }
+            else
+            {
+                common_scripts\utility::flag_wait( "cargoholds_1_enter_clear" );
+                var_3["alavi"] = 0;
+                var_3["grigsby"] = 0;
+                var_3["price"] = 2;
+            }
+
+            thread maps\mo_tools::radio_msg_stack( "cargoship_gm1_moveup" );
+            level.heroes3["grigsby"].dontpushplayer = undefined;
+            level.heroes3["grigsby"] pushplayer( 1 );
+            maps\cargoship_code::hallways_heroes( "cargoholds_1_enter_clear", "cargoholds_1_cross", undefined, var_3 );
+            thread maps\mo_tools::radio_msg_stack( "cargoship_pri_squadonme" );
+            var_3["price"] = 0;
+            var_3["alavi"] = 1;
+            var_3["grigsby"] = 2;
+            var_4["alavi"] = "cargoship_gm1_notangos";
+            var_4["grigsby"] = "cargoship_grg_forwardclear";
+            var_4["price"] = undefined;
+            level.heroes3["alavi"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
+            maps\cargoship_code::hallways_heroes( "cargoholds_1_cross", "cargoholds_1_part3", var_4, var_3 );
+            level.heroes3["price"] thread maps\_utility::handsignal( "go", 1 );
+            thread maps\mo_tools::radio_msg_stack( "cargoship_pri_moveup" );
+            var_3["price"] = 1.75;
+            var_3["alavi"] = 2.5;
+            var_3["grigsby"] = 1.25;
             var_2["alavi"] = undefined;
             var_2["grigsby"] = undefined;
-            var_2["price"] = undefined;
-            var_3["price"] = 0.1;
-            var_3["alavi"] = 0;
-            var_3["grigsby"] = 1.5;
-        }
-        else
-        {
-            var_2["alavi"] = "cornerleft8";
+            var_2["price"] = "crouch2run";
+            thread cargohold1_dialogue1();
+            maps\cargoship_code::hallways_heroes( "cargoholds_1_part3", "cargoholds_1_cross2", undefined, var_3 );
+            var_3["price"] = 0;
+            var_3["alavi"] = 2.0;
+            var_3["grigsby"] = 3.5;
+            var_2["alavi"] = "cornerleft6";
             var_2["grigsby"] = undefined;
-            var_2["price"] = "cornerleft8";
-            var_3["price"] = 0.35;
-            var_3["alavi"] = 0;
-            var_3["grigsby"] = 1.7;
-        }
-
-        level.heroes3["alavi"] notify( "stop_loop" );
-        level.heroes3["price"] notify( "stop_loop" );
-        level.heroes3["alavi"] stopanimscripted();
-        level.heroes3["price"] stopanimscripted();
-        thread maps\cargoship_code::hallways_heroes( "cargoholds_1_enter", "cargoholds_1_enter_clear", undefined, var_3, var_2 );
-
-        if ( common_scripts\utility::flag( "cargoholds_1_enter_clear" ) )
-        {
-            var_3["price"] = 0.35;
-            var_3["alavi"] = 0;
-            var_3["grigsby"] = 1.7;
-        }
-        else
-        {
-            common_scripts\utility::flag_wait( "cargoholds_1_enter_clear" );
+            var_2["price"] = undefined;
+            thread cargohold1_dialogue2();
+            thread cargohold1_dialogue3();
+            maps\cargoship_code::hallways_heroes( "cargoholds_1_cross2", "cargoholds_1_part5", undefined, var_3, var_2 );
+            var_3["price"] = 1;
             var_3["alavi"] = 0;
             var_3["grigsby"] = 0;
-            var_3["price"] = 2;
-        }
-
-        thread maps\mo_tools::radio_msg_stack( "cargoship_gm1_moveup" );
-        level.heroes3["grigsby"].dontpushplayer = undefined;
-        level.heroes3["grigsby"] pushplayer( 1 );
-        maps\cargoship_code::hallways_heroes( "cargoholds_1_enter_clear", "cargoholds_1_cross", undefined, var_3 );
-        thread maps\mo_tools::radio_msg_stack( "cargoship_pri_squadonme" );
-        var_3["price"] = 0;
-        var_3["alavi"] = 1;
-        var_3["grigsby"] = 2;
-        var_4["alavi"] = "cargoship_gm1_notangos";
-        var_4["grigsby"] = "cargoship_grg_forwardclear";
-        var_4["price"] = undefined;
-        level.heroes3["alavi"] maps\mo_tools::disable_cqbwalk_ign_demo_wrapper();
-        maps\cargoship_code::hallways_heroes( "cargoholds_1_cross", "cargoholds_1_part3", var_4, var_3 );
-        level.heroes3["price"] thread maps\_utility::handsignal( "go", 1 );
-        thread maps\mo_tools::radio_msg_stack( "cargoship_pri_moveup" );
-        var_3["price"] = 1.75;
-        var_3["alavi"] = 2.5;
-        var_3["grigsby"] = 1.25;
-        var_2["alavi"] = undefined;
-        var_2["grigsby"] = undefined;
-        var_2["price"] = "crouch2run";
-        thread cargohold1_dialogue1();
-        maps\cargoship_code::hallways_heroes( "cargoholds_1_part3", "cargoholds_1_cross2", undefined, var_3 );
-        var_3["price"] = 0;
-        var_3["alavi"] = 2.0;
-        var_3["grigsby"] = 3.5;
-        var_2["alavi"] = "cornerleft6";
-        var_2["grigsby"] = undefined;
-        var_2["price"] = undefined;
-        thread cargohold1_dialogue2();
-        thread cargohold1_dialogue3();
-        maps\cargoship_code::hallways_heroes( "cargoholds_1_cross2", "cargoholds_1_part5", undefined, var_3, var_2 );
-        var_3["price"] = 1;
-        var_3["alavi"] = 0;
-        var_3["grigsby"] = 0;
-        maps\cargoship_code::hallways_heroes( "cargoholds_1_part5", "nothing", undefined, var_3 );
-        common_scripts\utility::flag_set( "cargoholds2" );
+            maps\cargoship_code::hallways_heroes( "cargoholds_1_part5", "nothing", undefined, var_3 );
+            common_scripts\utility::flag_set( "cargoholds2" );
     }
 }
 
@@ -2570,7 +2573,7 @@ cargohold1_pulp_fiction_guy()
     self.goalradius = 90;
     self setgoalpos( level.player.origin );
     maps\_utility::radio_dialogue_stop();
-    self playsound( "generic_meleecharge_russian_" +randomintrange( 1, 8 ) );
+    self playsound( "generic_meleecharge_russian_" + randomintrange( 1, 8 ) );
 
     while ( level.player.health > 0 )
     {
@@ -2650,7 +2653,7 @@ cargohold1_flashed_enemies()
     self.goalradius = 64;
     self.health = 2;
     self.disablelongdeath = 1;
-    var_0 = spawn( "script_origin",( -2176, 540, -140 ) );
+    var_0 = spawn( "script_origin", ( -2176, 540, -140 ) );
     level waittill( "alavi_looked" );
     self setentitytarget( var_0 );
     level waittill( "flashbang" );
@@ -2784,8 +2787,8 @@ cargohold2_main()
 {
     var_0 = getentarray( "cargohold2_catwalk_enemies", "targetname" );
     var_1 = getentarray( "cargohold2_catwalk_enemies2", "targetname" );
-    common_scripts\utility::array_thread( var_0, maps\_utility::add_spawn_function,::cargohold2_enemies1 );
-    common_scripts\utility::array_thread( var_1, maps\_utility::add_spawn_function,::cargohold2_enemies2 );
+    common_scripts\utility::array_thread( var_0, maps\_utility::add_spawn_function, ::cargohold2_enemies1 );
+    common_scripts\utility::array_thread( var_1, maps\_utility::add_spawn_function, ::cargohold2_enemies2 );
     thread cargohold2_enemies1_death();
     thread cargohold2_enemies2_death();
     common_scripts\utility::flag_wait( "cargoholds2" );
@@ -2797,9 +2800,9 @@ cargohold2_main()
     var_2["price"] = 1.0;
     var_2["alavi"] = 0.8;
     var_2["grigsby"] = 0;
-    level.heroes3["alavi"] maps\_utility::delaythread( 0.5,::cargohold_catwalk_shuffle );
-    level.heroes3["grigsby"] maps\_utility::delaythread( 0.5,::cargohold_catwalk_shuffle );
-    level.heroes3["price"] maps\_utility::delaythread( 0.5,::cargohold_catwalk_shuffle );
+    level.heroes3["alavi"] maps\_utility::delaythread( 0.5, ::cargohold_catwalk_shuffle );
+    level.heroes3["grigsby"] maps\_utility::delaythread( 0.5, ::cargohold_catwalk_shuffle );
+    level.heroes3["price"] maps\_utility::delaythread( 0.5, ::cargohold_catwalk_shuffle );
     maps\cargoship_code::hallways_heroes( "cargohold2_catwalk", "cargohold2_catwalk2", undefined, var_2 );
     common_scripts\utility::flag_wait( "cargohold2_catwalk2a" );
     level.heroes3["grigsby"].moveplaybackrate = 1;
@@ -2925,7 +2928,7 @@ cargohold_catwalk_shuffle()
     self.a.disablepain = 1;
     self setisignoringgrenades( 1 );
     self.allowpain = 0;
-    common_scripts\utility::flag_init( "cargohold2_catwalk_end_" +self.script_noteworthy );
+    common_scripts\utility::flag_init( "cargohold2_catwalk_end_" + self.script_noteworthy );
     common_scripts\utility::waittill_any_ents( self, "hallways_heroes_ready", level, "cargohold2_catwalk2" );
 
     if ( common_scripts\utility::flag( "cargohold2_catwalk2" ) )
@@ -2954,7 +2957,7 @@ cargohold_catwalk_shuffle()
     var_1 = var_1 * ( 1 / var_4 );
     self animcustom( ::cargohold_catwalk_shuffle_aim );
 
-    while ( var_2 &&!common_scripts\utility::flag( "cargohold2_catwalk_end_" +self.script_noteworthy ) )
+    while ( var_2 && !common_scripts\utility::flag( "cargohold2_catwalk_end_" + self.script_noteworthy ) )
     {
         self setanim( var_3, 1, 0.2, var_4 );
         self setanim( %exposed_aiming, 1 );
@@ -2968,12 +2971,12 @@ cargohold_catwalk_shuffle()
 
         if ( self.script_noteworthy == "grigsby" && common_scripts\utility::flag( "cargohold2_catwalk2a" ) )
         {
-            common_scripts\utility::flag_set( "cargohold2_catwalk_end_" +self.script_noteworthy );
+            common_scripts\utility::flag_set( "cargohold2_catwalk_end_" + self.script_noteworthy );
             common_scripts\utility::flag_set( "cargohold2_catwalk_end_alavi" );
             continue;
         }
 
-        if ( self.script_noteworthy == "alavi" && common_scripts\utility::flag( "cargohold2_catwalk_end_" +self.script_noteworthy ) )
+        if ( self.script_noteworthy == "alavi" && common_scripts\utility::flag( "cargohold2_catwalk_end_" + self.script_noteworthy ) )
             common_scripts\utility::flag_set( "cargohold2_catwalk_end_price" );
     }
 
@@ -3054,23 +3057,23 @@ laststand_main()
     switch ( var_0 )
     {
         case "laststand":
-        common_scripts\utility::array_thread( getentarray( "cargohold3_enemies1", "targetname" ), maps\_utility::add_spawn_function,::laststand_enemies1 );
-        common_scripts\utility::array_thread( getentarray( "cargohold3_enemies2", "targetname" ), maps\_utility::add_spawn_function,::laststand_enemies2 );
-        common_scripts\utility::array_thread( getentarray( "cargohold3_enemies3", "targetname" ), maps\_utility::add_spawn_function,::laststand_enemies3 );
-        thread laststand_enemyspawn( "cargohold3_enemies1", "cargohold3_enemies2", 1 );
-        thread laststand_enemyspawn( "cargohold3_enemies2", "cargohold3_enemies3", 2 );
-        common_scripts\utility::flag_wait( "laststand" );
-        common_scripts\utility::array_thread( level.heroes3,::laststand_hero_think );
-        thread laststand_clear();
-        laststand_breach();
-        maps\_utility::delaythread( 15, common_scripts\utility::flag_set, "nade_hint" );
-        common_scripts\utility::flag_set( "package_enter" );
-        maps\_utility::autosave_by_name( "package_enter" );
-        thread maps\cargoship_code::player_speed_reset( 1 );
-        var_1 = getent( "laststand_red1", "targetname" );
-        var_1 notify( "trigger" );
-        wait 3;
-        setsaveddvar( "ai_friendlyFireBlockDuration", 2000 );
+            common_scripts\utility::array_thread( getentarray( "cargohold3_enemies1", "targetname" ), maps\_utility::add_spawn_function, ::laststand_enemies1 );
+            common_scripts\utility::array_thread( getentarray( "cargohold3_enemies2", "targetname" ), maps\_utility::add_spawn_function, ::laststand_enemies2 );
+            common_scripts\utility::array_thread( getentarray( "cargohold3_enemies3", "targetname" ), maps\_utility::add_spawn_function, ::laststand_enemies3 );
+            thread laststand_enemyspawn( "cargohold3_enemies1", "cargohold3_enemies2", 1 );
+            thread laststand_enemyspawn( "cargohold3_enemies2", "cargohold3_enemies3", 2 );
+            common_scripts\utility::flag_wait( "laststand" );
+            common_scripts\utility::array_thread( level.heroes3, ::laststand_hero_think );
+            thread laststand_clear();
+            laststand_breach();
+            maps\_utility::delaythread( 15, common_scripts\utility::flag_set, "nade_hint" );
+            common_scripts\utility::flag_set( "package_enter" );
+            maps\_utility::autosave_by_name( "package_enter" );
+            thread maps\cargoship_code::player_speed_reset( 1 );
+            var_1 = getent( "laststand_red1", "targetname" );
+            var_1 notify( "trigger" );
+            wait 3;
+            setsaveddvar( "ai_friendlyFireBlockDuration", 2000 );
     }
 }
 
@@ -3095,14 +3098,14 @@ laststand_hero_think()
     switch ( self.script_noteworthy )
     {
         case "price":
-        wait 2;
-        break;
+            wait 2;
+            break;
         case "grigsby":
-        wait 5;
-        break;
+            wait 5;
+            break;
         case "alavi":
-        wait 10;
-        break;
+            wait 10;
+            break;
     }
 
     setsaveddvar( "ai_threatUpdateInterval", 1000 );
@@ -3128,35 +3131,33 @@ laststand_hero_think()
     switch ( self.script_noteworthy )
     {
         case "price":
-        self.goalradius = 400;
+            self.goalradius = 400;
 
-        while ( !common_scripts\utility::flag( "package" ) )
-        {
-            var_2 = getaiarray( "axis" );
+            while ( !common_scripts\utility::flag( "package" ) )
+            {
+                var_2 = getaiarray( "axis" );
 
-            if ( !isdefined( var_2 ) || var_2.size == 0 )
-                break;
+                if ( !isdefined( var_2 ) || var_2.size == 0 )
+                    break;
 
-            var_3 = common_scripts\utility::getclosest( self.origin, var_2 );
-            self.favoriteenemy = var_3;
-            var_4 = clamp( var_3.origin[1], -330, 330 );
-            self setgoalpos( ( var_3.origin[0], var_4, self.origin[2] ) );
-            wait( randomfloatrange( 1, 5 ) );
-        }
+                var_3 = common_scripts\utility::getclosest( self.origin, var_2 );
+                self.favoriteenemy = var_3;
+                var_4 = clamp( var_3.origin[1], -330, 330 );
+                self setgoalpos( ( var_3.origin[0], var_4, self.origin[2] ) );
+                wait( randomfloatrange( 1, 5 ) );
+            }
 
-        break;
+            break;
         default:
-        self.goalradius = 400;
+            self.goalradius = 400;
 
-        while ( !common_scripts\utility::flag( "package" ) )
-        {
-            self setgoalpos( level.heroes3["price"].origin );
-            wait 1;
-        }
-
-        break;
+            while ( !common_scripts\utility::flag( "package" ) )
+            {
+                self setgoalpos( level.heroes3["price"].origin );
+                wait 1;
+            }
+            break;
     }
-
     common_scripts\utility::flag_wait( "package" );
     setsaveddvar( "ai_threatUpdateInterval", 500 );
     setsaveddvar( "ai_coversearchinterval", 2000 );
@@ -3248,7 +3249,7 @@ laststand_enemyspawn( var_0, var_1, var_2, var_3 )
     var_4 waittill( "trigger" );
     wait 0.25;
     var_7 = getaiarray( "axis" );
-    maps\_utility::waittill_dead( var_7, var_6.size -var_2, var_3 );
+    maps\_utility::waittill_dead( var_7, var_6.size - var_2, var_3 );
     var_5 notify( "trigger" );
 }
 
@@ -3259,7 +3260,7 @@ laststand_clear()
     common_scripts\utility::flag_set( "package_enter" );
     wait 0.5;
     var_1 = getaiarray( "axis" );
-    maps\_utility::waittill_dead( var_1, var_1.size -3 );
+    maps\_utility::waittill_dead( var_1, var_1.size - 3 );
     common_scripts\utility::flag_set( "laststand_3left" );
     var_1 = getaiarray( "axis" );
 
@@ -3281,38 +3282,38 @@ package_main()
     switch ( var_0 )
     {
         case "package":
-        common_scripts\utility::flag_wait( "package" );
-        cargoship_disablealliesreload();
-        wait 1;
-        thread package_dialogue();
-        thread package_music();
-        common_scripts\utility::flag_wait( "package_report" );
-        thread package_grigs();
-        thread package_price();
-        var_1 = getarraykeys( level.heroes3 );
+            common_scripts\utility::flag_wait( "package" );
+            cargoship_disablealliesreload();
+            wait 1;
+            thread package_dialogue();
+            thread package_music();
+            common_scripts\utility::flag_wait( "package_report" );
+            thread package_grigs();
+            thread package_price();
+            var_1 = getarraykeys( level.heroes3 );
 
-        for ( var_2 = 0; var_2 < var_1.size; var_2++ )
-        {
-            var_3 = var_1[var_2];
-            level.heroes3[var_3].animname = "escape";
-        }
+            for ( var_2 = 0; var_2 < var_1.size; var_2++ )
+            {
+                var_3 = var_1[var_2];
+                level.heroes3[var_3].animname = "escape";
+            }
 
-        level.heroes3["price"] pushplayer( 1 );
-        level.heroes3["grigsby"] pushplayer( 1 );
-        level.heroes3["alavi"] pushplayer( 1 );
-        var_4 = level.heroes3["alavi"] maps\cargoship_code::hallways_heroes_get_node( "package1" );
-        level.heroes3["alavi"] thread package_notify_on_position_reached( var_4 );
-        level.heroes3["alavi"] maps\cargoship_code::hallways_heroes_solo( "package1", "nothing" );
-        level.heroes3["alavi"].grenadeawareness = 0;
-        common_scripts\utility::flag_set( "package_reading" );
-        level.heroes3["price"].goalradius = 4;
-        level.heroes3["price"].goalradius = 4;
-        common_scripts\utility::flag_wait( "package_orders" );
-        thread maps\cargoship_code::player_speed_set_cargoship( 185, 1 );
-        common_scripts\utility::array_thread( level.heroes3, maps\_utility::clear_run_anim );
-        common_scripts\utility::flag_set( "escape" );
-        common_scripts\utility::flag_wait( "package_secure" );
-        level.heroes3["alavi"].grenadeawareness = 1;
+            level.heroes3["price"] pushplayer( 1 );
+            level.heroes3["grigsby"] pushplayer( 1 );
+            level.heroes3["alavi"] pushplayer( 1 );
+            var_4 = level.heroes3["alavi"] maps\cargoship_code::hallways_heroes_get_node( "package1" );
+            level.heroes3["alavi"] thread package_notify_on_position_reached( var_4 );
+            level.heroes3["alavi"] maps\cargoship_code::hallways_heroes_solo( "package1", "nothing" );
+            level.heroes3["alavi"].grenadeawareness = 0;
+            common_scripts\utility::flag_set( "package_reading" );
+            level.heroes3["price"].goalradius = 4;
+            level.heroes3["price"].goalradius = 4;
+            common_scripts\utility::flag_wait( "package_orders" );
+            thread maps\cargoship_code::player_speed_set_cargoship( 185, 1 );
+            common_scripts\utility::array_thread( level.heroes3, maps\_utility::clear_run_anim );
+            common_scripts\utility::flag_set( "escape" );
+            common_scripts\utility::flag_wait( "package_secure" );
+            level.heroes3["alavi"].grenadeawareness = 1;
     }
 }
 
@@ -3479,7 +3480,7 @@ package_music()
 
 package_radiation()
 {
-    var_0 = spawn( "script_origin",( 2477.2, 198, -311 ) );
+    var_0 = spawn( "script_origin", ( 2477.2, 198, -311 ) );
     var_1 = "none";
 
     while ( !common_scripts\utility::flag( "escape_explosion" ) )
@@ -3491,15 +3492,13 @@ package_radiation()
             var_1 = "none";
             var_0 stoploopsound();
         }
-        else
-        if ( var_2 < 150 && var_1 != "item_geigercouner_level2" )
+        else if ( var_2 < 150 && var_1 != "item_geigercouner_level2" )
         {
             var_0 stoploopsound();
             var_1 = "item_geigercouner_level2";
             var_0 playloopsound( var_1 );
         }
-        else
-        if ( var_1 != "item_geigercouner_level1" )
+        else if ( var_1 != "item_geigercouner_level1" )
         {
             var_0 stoploopsound();
             var_1 = "item_geigercouner_level1";
@@ -3522,7 +3521,7 @@ package_doorsetup()
         var_0[var_1] linkto( self );
 
     var_2 = common_scripts\utility::getstruct( self.target, "targetname" );
-    var_3 = spawn( "script_origin",( 0, 0, 0 ) );
+    var_3 = spawn( "script_origin", ( 0, 0, 0 ) );
     var_3.axial = 1;
     var_4 = var_2.origin;
     var_5 = undefined;
@@ -3530,14 +3529,14 @@ package_doorsetup()
     var_6 = maps\_utility::vector_multiply( var_6, 10 );
 
     if ( issubstr( self.target, "right" ) )
-        var_5 = var_4 -var_6;
+        var_5 = var_4 - var_6;
     else
-        var_5 = var_4 +var_6;
+        var_5 = var_4 + var_6;
 
     var_7 = ( 0, 360, 0 );
     var_8 = var_2.angles;
     var_3.origin = var_4;
-    var_3.angles = vectortoangles( var_5 -var_4 );
+    var_3.angles = vectortoangles( var_5 - var_4 );
     var_3.pratio = 1;
     var_3.rratio = -1;
     var_3.sway1max = 20;
@@ -3619,7 +3618,7 @@ escape_main()
     var_3 = getent( "player_end_water_clip", "targetname" );
     var_3 solid();
     common_scripts\utility::flag_wait( "escape_explosion" );
-    level.heroes3["price"] maps\_utility::delaythread( 14,::setheadmodel, "head_sas_ct_assault_price_mask_up_wrinkle" );
+    level.heroes3["price"] maps\_utility::delaythread( 14, ::setheadmodel, "head_sas_ct_assault_price_mask_up_wrinkle" );
     thread end_sinking_scenario_vfx();
     level.heroes3["price"] setanimlimited( %price_mask_up, 0 );
     thread maps\cargoship_code::showgasmaskcracks();
@@ -3629,7 +3628,7 @@ escape_main()
     level.heroes3["alavi"] thread maps\_utility::function_stack( maps\cargoship_code::escape_heroes_run, "escape_cargohold2" );
     level.heroes3["grigsby"] thread maps\_utility::function_stack( maps\cargoship_code::escape_heroes_run, "escape_cargohold2" );
     common_scripts\utility::flag_wait( "escape_get_to_catwalks_price" );
-    level.heroes3["price"] maps\_utility::delaythread( 4,::setheadmodel, level.price_normal_headmodel );
+    level.heroes3["price"] maps\_utility::delaythread( 4, ::setheadmodel, level.price_normal_headmodel );
     maps\cargoship_code::player_speed_set_cargoship( 80, 0.25 );
     maps\_utility::delaythread( 0.5, maps\cargoship_code::player_speed_set_cargoship, 175, 3.5 );
     thread maps\cargoship_lighting::apply_lighting_pass_cargoship( "cargoship_escape" );
@@ -3687,8 +3686,8 @@ end_main()
         wait 0.05;
 
     level.heroes3["alavi"] thread maps\_utility::function_stack( ::escape_heroes_rescue );
-    level.heroes3["grigsby"] maps\_utility::delaythread( 0.5, maps\_utility::function_stack,::escape_heroes_rescue );
-    level.heroes3["price"] maps\_utility::delaythread( 1.0, maps\_utility::function_stack,::escape_heroes_rescue );
+    level.heroes3["grigsby"] maps\_utility::delaythread( 0.5, maps\_utility::function_stack, ::escape_heroes_rescue );
+    level.heroes3["price"] maps\_utility::delaythread( 1.0, maps\_utility::function_stack, ::escape_heroes_rescue );
     var_3 = [];
     var_3[var_3.size] = level.heroes3["price"];
     var_3[var_3.size] = level.heroes3["alavi"];
@@ -3789,7 +3788,7 @@ end_anim_thread()
 
     common_scripts\utility::flag_set( "end_seaknight_leaving" );
     maps\_utility::delaythread( 5, maps\cargoship_code::escape_mission_failed );
-    thread common_scripts\utility::play_sound_in_space( "elm_wave_crash_ext",( -3392, 656, -64 ) );
+    thread common_scripts\utility::play_sound_in_space( "elm_wave_crash_ext", ( -3392, 656, -64 ) );
     common_scripts\_exploder::exploder( "900" );
     level.hud_mantle["text"].alpha = 0;
     var_2 notify( "stop_loop_heli" );
@@ -3844,9 +3843,9 @@ escape_heroes_rescue()
     maps\_utility::clear_run_anim();
     var_0 = getent( "escape_end_anim_node", "targetname" );
     var_1 = level.seaknight.model;
-    var_2 = "rescue_" +self.script_noteworthy;
+    var_2 = "rescue_" + self.script_noteworthy;
     var_3 = var_2 + "_idle";
-    var_4 = "stop_loop" +self.script_noteworthy;
+    var_4 = "stop_loop" + self.script_noteworthy;
 
     if ( self.script_noteworthy == "price" )
     {
@@ -3862,8 +3861,7 @@ escape_heroes_rescue()
             common_scripts\utility::flag_wait( "escape_alavi_start_rescue" );
             common_scripts\utility::flag_set( "escape_alavi_loading" );
         }
-        else
-        if ( self.script_noteworthy == "grigsby" )
+        else if ( self.script_noteworthy == "grigsby" )
             common_scripts\utility::flag_wait( "escape_gaz_start_rescue" );
 
         var_0 maps\_anim::anim_generic( self, var_2 );
@@ -3881,6 +3879,7 @@ escape_heroes_rescuing_order()
     wait 0.1;
     common_scripts\utility::flag_set( "escape_price_start_rescue" );
 }
+
 #using_animtree( "vehicles" );
 
 escape_seaknight()
@@ -3942,7 +3941,7 @@ end_mantle_angle()
 {
     var_0 = level.player getplayerangles();
     var_1 = anglestoforward( var_0 );
-    var_2 = vectornormalize( level.seaknight.model.origin -level.player.origin );
+    var_2 = vectornormalize( level.seaknight.model.origin - level.player.origin );
 
     if ( vectordot( var_1, var_2 ) > 0.75 )
         return 1;
@@ -4027,7 +4026,7 @@ end_dialogue()
     common_scripts\utility::flag_set( "player_rescued" );
     maps\mo_tools::radio_msg_stack( "cargoship_hp3_outtahere" );
     maps\mo_tools::radio_msg_stack( "cargoship_hp3_returntobase" );
-    thread common_scripts\utility::play_sound_in_space( "scn_heli_jump_final_thunder_lr",( 0, 0, 0 ) );
+    thread common_scripts\utility::play_sound_in_space( "scn_heli_jump_final_thunder_lr", ( 0, 0, 0 ) );
     maps\_utility::flag_set_delayed( "end_finished", 2 );
 }
 
@@ -4111,9 +4110,9 @@ end_sinking_scenario_vfx()
     var_12 = maps\_utility::getfxarraybyid( "cgoshp_light_tip_red" );
     var_12 = common_scripts\utility::array_combine( var_12, maps\_utility::getfxarraybyid( "cgoshp_light_tip_green" ) );
     var_12 = common_scripts\utility::array_combine( var_12, maps\_utility::getfxarraybyid( "cgoshp_light_tip_white" ) );
-    common_scripts\utility::array_thread( common_scripts\utility::getstructarray( "spotlights", "targetname" ),::end_sinking_spotlight_fx, var_5, var_6, var_7, var_8, var_9, var_10, var_11 );
-    common_scripts\utility::array_thread( maps\_utility::getfxarraybyid( "cgoshp_lights_cr_fly_light" ),::end_sinking_light_fx, var_5, var_6, var_7, var_8, var_9, var_10, var_11 );
-    common_scripts\utility::array_thread( var_12,::end_sinking_light_fx, var_5, var_6, var_7, var_8, var_9, var_10, 0.05 );
+    common_scripts\utility::array_thread( common_scripts\utility::getstructarray( "spotlights", "targetname" ), ::end_sinking_spotlight_fx, var_5, var_6, var_7, var_8, var_9, var_10, var_11 );
+    common_scripts\utility::array_thread( maps\_utility::getfxarraybyid( "cgoshp_lights_cr_fly_light" ), ::end_sinking_light_fx, var_5, var_6, var_7, var_8, var_9, var_10, var_11 );
+    common_scripts\utility::array_thread( var_12, ::end_sinking_light_fx, var_5, var_6, var_7, var_8, var_9, var_10, 0.05 );
     wait 3.0;
     common_scripts\_exploder::exploder( "902" );
     wait 0.3;
@@ -4270,8 +4269,8 @@ end_screen()
         for ( var_2 = 0; var_2 < var_1.size; var_2++ )
         {
             var_3 = 1;
-            var_4 = var_2 * var_3 +1;
-            maps\_utility::delaythread( var_4, maps\cargoship_code::centerlinethread, var_1[var_2], var_1.size -var_2 -1, var_3 );
+            var_4 = var_2 * var_3 + 1;
+            maps\_utility::delaythread( var_4, maps\cargoship_code::centerlinethread, var_1[var_2], var_1.size - var_2 - 1, var_3 );
         }
 
         setomnvar( "ui_gasmask", 0 );
@@ -4291,12 +4290,12 @@ misc_dummy()
 
 misc_setup()
 {
-    common_scripts\utility::array_thread( common_scripts\utility::getstructarray( "spotlights", "targetname" ),::misc_spotlight_fx );
+    common_scripts\utility::array_thread( common_scripts\utility::getstructarray( "spotlights", "targetname" ), ::misc_spotlight_fx );
     thread cargohold_lights_logic();
-    common_scripts\utility::array_thread( getentarray( "falling_water_heavydoor_cgoshp", "targetname" ),::misc_drip_sway_fx );
-    common_scripts\utility::array_thread( getentarray( "falling_water_heavydoor_cgoshp_noripple", "targetname" ),::misc_drip_sway_fx );
-    common_scripts\utility::array_thread( getentarray( "falling_water_sidedoor_cgoshp", "targetname" ),::misc_drip_sway_fx );
-    common_scripts\utility::array_thread( getentarray( "falling_water_sidedoor_cgoshp_noripple", "targetname" ),::misc_drip_sway_fx );
+    common_scripts\utility::array_thread( getentarray( "falling_water_heavydoor_cgoshp", "targetname" ), ::misc_drip_sway_fx );
+    common_scripts\utility::array_thread( getentarray( "falling_water_heavydoor_cgoshp_noripple", "targetname" ), ::misc_drip_sway_fx );
+    common_scripts\utility::array_thread( getentarray( "falling_water_sidedoor_cgoshp", "targetname" ), ::misc_drip_sway_fx );
+    common_scripts\utility::array_thread( getentarray( "falling_water_sidedoor_cgoshp_noripple", "targetname" ), ::misc_drip_sway_fx );
     common_scripts\utility::array_thread( getentarray( "fx_handler", "targetname" ), maps\cargoship_code::misc_fx_handler_trig );
     thread misc_fx_handlers();
     thread misc_hide_sea_trigger();
@@ -4307,7 +4306,7 @@ misc_setup()
     common_scripts\utility::array_thread( getentarray( "light_cargohold", "targetname" ), maps\cargoship_code::misc_light_sway );
     common_scripts\utility::array_thread( getentarray( "escape_flags", "script_noteworthy" ), common_scripts\utility::trigger_off );
     common_scripts\utility::array_thread( getentarray( "deck_flags", "script_noteworthy" ), common_scripts\utility::trigger_off );
-    common_scripts\utility::array_thread( getentarray( "sink_waterlevel", "targetname" ),::misc_setup_waterlevel );
+    common_scripts\utility::array_thread( getentarray( "sink_waterlevel", "targetname" ), ::misc_setup_waterlevel );
     var_0 = getentarray( "escape_stair_blocker", "targetname" );
 
     for ( var_1 = 0; var_1 < var_0.size; var_1++ )
@@ -4532,7 +4531,7 @@ misc_spotlight_fx()
 cargohold_lights_logic()
 {
     cargohold_lights_getlights();
-    common_scripts\utility::array_thread( level.cargohold_lights,::cargohold_lights_movelights );
+    common_scripts\utility::array_thread( level.cargohold_lights, ::cargohold_lights_movelights );
     common_scripts\utility::flag_wait( "escape_explosion" );
     wait 1;
 
@@ -4753,58 +4752,58 @@ objective_main()
 
     if ( level.jumpto != "start" )
     {
-        objective_add( var_0, "active", level.strings["obj_package"],( 3052, 15, 407 ) );
+        objective_add( var_0, "active", level.strings["obj_package"], ( 3052, 15, 407 ) );
         objective_current( var_0 );
     }
 
     switch ( level.jumpto )
     {
         case "start":
-        common_scripts\utility::flag_wait( "at_bridge" );
+            common_scripts\utility::flag_wait( "at_bridge" );
         case "bridge":
-        objective_add( var_0, "active", level.strings["obj_package"],( 3052, 15, 407 ) );
-        objective_current( var_0 );
-        level waittill( "bridge_secured" );
-        objective_position( var_0,( 2640, 624, 208 ) );
-        common_scripts\utility::flag_wait( "deck" );
+            objective_add( var_0, "active", level.strings["obj_package"], ( 3052, 15, 407 ) );
+            objective_current( var_0 );
+            level waittill( "bridge_secured" );
+            objective_position( var_0, ( 2640, 624, 208 ) );
+            common_scripts\utility::flag_wait( "deck" );
         case "deck":
-        objective_position( var_0,( -2116, 0, 80 ) );
-        common_scripts\utility::flag_wait( "hallways_moveup" );
+            objective_position( var_0, ( -2116, 0, 80 ) );
+            common_scripts\utility::flag_wait( "hallways_moveup" );
         case "hallways":
-        objective_position( var_0,( -2506, -496, 96 ) );
-        common_scripts\utility::flag_wait( "hallways_enter" );
-        objective_position( var_0,( -2806, -122, 96 ) );
-        common_scripts\utility::flag_wait( "hallways_stairs" );
-        objective_position( var_0,( -3292, -248, -65 ) );
-        common_scripts\utility::flag_wait( "hallways_bottom_stairs" );
+            objective_position( var_0, ( -2506, -496, 96 ) );
+            common_scripts\utility::flag_wait( "hallways_enter" );
+            objective_position( var_0, ( -2806, -122, 96 ) );
+            common_scripts\utility::flag_wait( "hallways_stairs" );
+            objective_position( var_0, ( -3292, -248, -65 ) );
+            common_scripts\utility::flag_wait( "hallways_bottom_stairs" );
         case "package":
         case "laststand":
         case "cargohold2":
         case "cargohold":
-        thread objective_laptop();
-        objective_position( var_0,( 2254, 197, -320 ) );
-        common_scripts\utility::flag_set( "package_reading" );
-        objective_position( var_0,( 2254, 197, -320 ) );
-        common_scripts\utility::flag_wait( "package_orders" );
-        objective_state( var_0, "done" );
-        var_0++;
-        var_1 = getent( "objective_package", "targetname" );
-        waittillframeend;
-        objective_add( var_0, "active", level.strings["obj_laptop"], var_1 getorigin() );
-        objective_current( var_0 );
-        common_scripts\utility::flag_wait( "package_secure" );
+            thread objective_laptop();
+            objective_position( var_0, ( 2254, 197, -320 ) );
+            common_scripts\utility::flag_set( "package_reading" );
+            objective_position( var_0, ( 2254, 197, -320 ) );
+            common_scripts\utility::flag_wait( "package_orders" );
+            objective_state( var_0, "done" );
+            var_0++;
+            var_1 = getent( "objective_package", "targetname" );
+            waittillframeend;
+            objective_add( var_0, "active", level.strings["obj_laptop"], var_1 getorigin() );
+            objective_current( var_0 );
+            common_scripts\utility::flag_wait( "package_secure" );
         case "end":
         case "escape":
-        objective_state( var_0, "done" );
-        var_0++;
-        objective_add( var_0, "active", level.strings["obj_exit"] );
-        thread objective_price( var_0 );
-        objective_current( var_0 );
-        common_scripts\utility::flag_wait( "player_rescued" );
-        maps\_utility::arcademode_stop_timer();
-        objective_state( var_0, "done" );
-        common_scripts\utility::flag_wait( "end_screen_done" );
-        maps\_utility::nextmission();
+            objective_state( var_0, "done" );
+            var_0++;
+            objective_add( var_0, "active", level.strings["obj_exit"] );
+            thread objective_price( var_0 );
+            objective_current( var_0 );
+            common_scripts\utility::flag_wait( "player_rescued" );
+            maps\_utility::arcademode_stop_timer();
+            objective_state( var_0, "done" );
+            common_scripts\utility::flag_wait( "end_screen_done" );
+            maps\_utility::nextmission();
     }
 }
 
@@ -4841,16 +4840,16 @@ objective_laptop_nag()
         switch ( var_2 )
         {
             case 1:
-            maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_macgetmanifest" );
-            break;
+                maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_macgetmanifest" );
+                break;
             case 2:
-            maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_donthavetime" );
-            maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_getmanifest" );
-            break;
+                maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_donthavetime" );
+                maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_getmanifest" );
+                break;
             case 3:
-            maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_gottamove" );
-            maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_manifestletsgo" );
-            break;
+                maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_gottamove" );
+                maps\mo_tools::anim_single_stack( var_3, "cargoship_pri_manifestletsgo" );
+                break;
         }
 
         var_2++;
@@ -4894,9 +4893,9 @@ objective_move( var_0, var_1, var_2, var_3 )
     if ( isdefined( var_3 ) )
         level waittill( var_3 );
 
-    level notify( "objective_move_" +var_1 );
-    level endon( "objective_move_" +var_1 );
-    var_4 = getent( "objective_move_" +var_0, "targetname" );
+    level notify( "objective_move_" + var_1 );
+    level endon( "objective_move_" + var_1 );
+    var_4 = getent( "objective_move_" + var_0, "targetname" );
 
     while ( isdefined( var_4 ) )
     {
@@ -4933,7 +4932,7 @@ boxes_in_the_wind()
         wait 0.1;
         var_5 = gettime();
 
-        if ( var_5 -var_4 > 4800 )
+        if ( var_5 - var_4 > 4800 )
             common_scripts\utility::flag_set( "BoxesInTheWindStop" );
     }
 }
@@ -4957,16 +4956,16 @@ detect_windboxes( var_0 )
 movewindbox( var_0 )
 {
     self endon( "BoxesInTheWindStop" );
-    var_0 physicslaunchclient( var_0.origin,( 0, 0, 0 ) );
+    var_0 physicslaunchclient( var_0.origin, ( 0, 0, 0 ) );
     var_1 = -2400;
 
     for (;;)
     {
         if ( randomintrange( 0, 100 ) > 75 && var_1 < 0 )
-            applyaccelerationonentity( var_0,( 0, -6, 0 ),( 0, 0, randomintrange( 1200, 3600 ) ) );
+            applyaccelerationonentity( var_0, ( 0, -6, 0 ), ( 0, 0, randomintrange( 1200, 3600 ) ) );
 
-        applyaccelerationonentity( var_0,( 0, 0, 0 ),( 0, var_1, 0 ) );
-        var_1 = var_1 +randomintrange( 36, 120 );
+        applyaccelerationonentity( var_0, ( 0, 0, 0 ), ( 0, var_1, 0 ) );
+        var_1 = var_1 + randomintrange( 36, 120 );
 
         if ( var_1 > 0 )
             var_1 = 0;
@@ -4993,24 +4992,22 @@ start_physical_dof()
     var_9 = -30;
     var_10 = 25;
 
-    for ( var_11 = 28; var_5 < var_6; var_5 = var_5 +0.1 )
+    for ( var_11 = 28; var_5 < var_6; var_5 = var_5 + 0.1 )
     {
-        var_0 = level.heli.model gettagorigin( "tag_guy4" ) -level.heli.model gettagorigin( "tag_guy7" );
+        var_0 = level.heli.model gettagorigin( "tag_guy4" ) - level.heli.model gettagorigin( "tag_guy7" );
         var_0 = vectornormalize( var_0 );
         var_1 = level.player getplayerangles();
         var_1 = anglestoforward( var_1 );
-        var_12 = atan2( var_1[1], var_1[0] ) -atan2( var_0[1], var_0[0] );
+        var_12 = atan2( var_1[1], var_1[0] ) - atan2( var_0[1], var_0[0] );
 
         if ( var_5 < 2.1 )
             var_12 = 0;
-        else
-        if ( var_12 < var_8 )
+        else if ( var_12 < var_8 )
         {
             level.player setphysicaldepthoffield( var_4.fstop, var_4.focusdistance, var_4.focusspeed, var_4.aperturespeed );
             var_7 = 1;
         }
-        else
-        if ( var_12 > var_9 && var_12 < var_10 )
+        else if ( var_12 > var_9 && var_12 < var_10 )
         {
             var_13 = var_2.focusspeed;
             var_14 = var_2.aperturespeed;
@@ -5024,8 +5021,7 @@ start_physical_dof()
 
             level.player setphysicaldepthoffield( var_2.fstop, var_2.focusdistance, var_13, var_14 );
         }
-        else
-        if ( var_12 > var_11 )
+        else if ( var_12 > var_11 )
         {
             var_13 = var_3.focusspeed;
             var_14 = var_3.aperturespeed;
@@ -5098,8 +5094,8 @@ roll_item( var_0 )
 
     for (;;)
     {
-        applyaccelerationonentity( self,( 0, 0, 0 ),( 0, var_2, 0 ) );
-        var_2 = var_2 +var_3;
+        applyaccelerationonentity( self, ( 0, 0, 0 ), ( 0, var_2, 0 ) );
+        var_2 = var_2 + var_3;
         wait 0.01;
         waittillframeend;
     }
@@ -5137,8 +5133,8 @@ frying_pan_fall()
 
 desert_storm_init()
 {
-    maps\_utility::add_global_spawn_function( "axis",::desert_storm_enemy_spawned );
-    common_scripts\utility::array_thread( getaiarray( "axis" ),::desert_storm_enemy_spawned );
+    maps\_utility::add_global_spawn_function( "axis", ::desert_storm_enemy_spawned );
+    common_scripts\utility::array_thread( getaiarray( "axis" ), ::desert_storm_enemy_spawned );
 }
 
 desert_storm_enemy_spawned()
@@ -5160,7 +5156,7 @@ desert_storm_achievement()
     if ( level.playerdeserteaglekill >= 5 )
     {
         maps\_utility::giveachievement_wrapper( "DESERT_STORM" );
-        maps\_utility::remove_global_spawn_function( "axis",::desert_storm_enemy_spawned );
+        maps\_utility::remove_global_spawn_function( "axis", ::desert_storm_enemy_spawned );
         level notify( "desert_storm_done" );
     }
 }

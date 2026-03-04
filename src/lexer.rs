@@ -110,17 +110,12 @@ impl TokenKind {
                 | TokenKind::HashOther
         )
     }
-
-    pub fn is_unary_prefix_only(&self) -> bool {
-        matches!(self, TokenKind::Bang | TokenKind::Tilde)
-    }
 }
 
 #[derive(Debug, Clone)]
 pub struct Token {
     pub kind: TokenKind,
     pub text: String,
-    pub line: usize,
     pub preceded_by_blank: bool,
 }
 
@@ -204,7 +199,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
     let chars: Vec<char> = src.chars().collect();
     let n = chars.len();
     let mut i = 0;
-    let mut line = 1usize;
     let mut tokens: Vec<Token> = Vec::new();
     let mut pending_blank = false;
 
@@ -225,7 +219,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
         if ch == '\n' {
             let mut nl = 0usize;
             while i < n && chars[i] == '\n' {
-                line += 1;
                 i += 1;
                 nl += 1;
             }
@@ -235,7 +228,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             continue;
         }
 
-        let token_line = line;
         let pb = pending_blank;
         pending_blank = false;
 
@@ -248,7 +240,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind: TokenKind::LineComment,
                 text: chars[start..i].iter().collect(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -258,16 +249,12 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             let start = i;
             i += 2;
             while i < n && !(chars[i] == '*' && peek!(1) == '/') {
-                if chars[i] == '\n' {
-                    line += 1;
-                }
                 i += 1;
             }
             i += 2; // consume */
             tokens.push(Token {
                 kind: TokenKind::BlockComment,
                 text: chars[start..i].iter().collect(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -290,7 +277,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind,
                 text,
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -312,7 +298,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind: TokenKind::IString,
                 text: chars[start..i].iter().collect(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -334,7 +319,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind: TokenKind::StringLit,
                 text: chars[start..i].iter().collect(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -349,7 +333,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind: TokenKind::AnimRef,
                 text: chars[start..i].iter().collect(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -376,7 +359,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind: TokenKind::Number,
                 text: chars[start..i].iter().collect(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -390,7 +372,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind: TokenKind::Ident,
                 text: chars[start..i].iter().collect(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             continue;
@@ -422,7 +403,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
             tokens.push(Token {
                 kind,
                 text: two[..len].to_string(),
-                line: token_line,
                 preceded_by_blank: pb,
             });
             i += len;
@@ -461,7 +441,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
         tokens.push(Token {
             kind,
             text: ch.to_string(),
-            line: token_line,
             preceded_by_blank: pb,
         });
         i += 1;
@@ -470,7 +449,6 @@ pub fn tokenize(src: &str) -> Vec<Token> {
     tokens.push(Token {
         kind: TokenKind::Eof,
         text: String::new(),
-        line,
         preceded_by_blank: false,
     });
 

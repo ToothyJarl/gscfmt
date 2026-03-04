@@ -10,7 +10,7 @@ use std::{
 
 use formatter::{FormatConfig, Formatter};
 
-const HELP: &str = r#"gscfmt — A formatter for GSC
+const HELP: &str = r#"gscfmt — A GSC formatter
 
 USAGE:
     gscfmt [OPTIONS] [FILE...]

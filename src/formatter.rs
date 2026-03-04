@@ -38,8 +38,14 @@ impl Formatter {
         let mut control_stack: Vec<usize> = Vec::new();
         let mut awaiting_body: bool = false;
         let mut braceless_saved_depth: Option<usize> = None;
+        let mut prev_real: Option<&Token> = None;
         let mut last_real: Option<&Token> = None;
         let mut prev_was_rbrace_toplevel = false;
+        let mut prev_was_preprocessor = false;
+
+        let mut in_case_label: bool = false;
+        let mut case_body_depth: Option<usize> = None;
+        let mut case_open_braces: usize = 0;
 
         fn at_line_start(out: &str) -> bool {
             out.is_empty() || out.ends_with('\n')
@@ -68,7 +74,7 @@ impl Formatter {
             None
         };
 
-        fn needs_space(prev: &Token, cur: &Token) -> bool {
+        fn needs_space(pprev: Option<&Token>, prev: &Token, cur: &Token) -> bool {
             let pk = &prev.kind;
             let pv = prev.text.as_str();
             let ck = &cur.kind;
@@ -82,7 +88,7 @@ impl Formatter {
                 ck,
                 TokenKind::Dot | TokenKind::DoubleColon | TokenKind::LBracket
             ) {
-                if pk.is_binary_op() {
+                if pk.is_binary_op() || *pk == TokenKind::Comma {
                     return true;
                 }
                 return false;
@@ -97,7 +103,7 @@ impl Formatter {
             }
 
             if *ck == TokenKind::LParen {
-                if pk.is_binary_op() {
+                if pk.is_binary_op() || *pk == TokenKind::Comma {
                     return true;
                 }
                 return *pk == TokenKind::Ident && is_control_kw(pv);
@@ -110,25 +116,29 @@ impl Formatter {
             }
 
             if matches!(ck, TokenKind::Bang | TokenKind::Tilde) {
-                return !pk.is_binary_op();
+                return pk.is_binary_op() || *pk == TokenKind::Comma;
             }
 
             let is_unary = matches!(pk, TokenKind::Minus | TokenKind::Plus)
-                && (matches!(
-                    prev.kind,
-                    TokenKind::LParen
-                        | TokenKind::LBracket
-                        | TokenKind::Comma
-                        | TokenKind::Semicolon
-                        | TokenKind::Colon
-                        | TokenKind::Assign
-                        | TokenKind::Plus
-                        | TokenKind::Minus
-                        | TokenKind::Star
-                        | TokenKind::Slash
-                        | TokenKind::Percent
-                ) || (*pk == TokenKind::Minus || *pk == TokenKind::Plus)
-                    && (pv == "return" || is_control_kw(pv) || is_space_after_kw(pv)));
+                && pprev.map_or(true, |pp| {
+                    matches!(
+                        pp.kind,
+                        TokenKind::LParen
+                            | TokenKind::LBracket
+                            | TokenKind::Comma
+                            | TokenKind::Semicolon
+                            | TokenKind::Colon
+                            | TokenKind::Assign
+                            | TokenKind::Plus
+                            | TokenKind::Minus
+                            | TokenKind::Star
+                            | TokenKind::Slash
+                            | TokenKind::Percent
+                    ) || (pp.kind == TokenKind::Ident
+                        && (pp.text == "return"
+                            || is_control_kw(&pp.text)
+                            || is_space_after_kw(&pp.text)))
+                });
 
             if is_unary && matches!(ck, TokenKind::Number | TokenKind::Ident | TokenKind::LParen) {
                 return false;
@@ -139,10 +149,6 @@ impl Formatter {
             }
 
             if *pk == TokenKind::Comma {
-                return true;
-            }
-
-            if ck.is_binary_op() || pk.is_binary_op() {
                 return true;
             }
 
@@ -196,8 +202,15 @@ impl Formatter {
                     && prev_was_rbrace_toplevel
                     && tk.kind == TokenKind::Ident
                     && next_real(i).map_or(false, |t| t.kind == TokenKind::LParen);
-                let author_blank = tk.preceded_by_blank && depth == 0 && !prev_was_rbrace_toplevel; // already handled above
-                let inner_blank = tk.preceded_by_blank && depth > 0 && at_line_start(&out);
+
+                let author_blank = tk.preceded_by_blank
+                    && depth == 0
+                    && !prev_was_rbrace_toplevel
+                    && !prev_was_preprocessor;
+                let inner_blank = tk.preceded_by_blank
+                    && depth > 0
+                    && at_line_start(&out)
+                    && !prev_was_preprocessor;
                 tl_fn || author_blank || inner_blank
             };
 
@@ -218,6 +231,17 @@ impl Formatter {
             }
 
             if tk.kind == TokenKind::RBrace {
+                if case_body_depth.is_some() {
+                    if case_open_braces > 0 {
+                        case_open_braces -= 1;
+                    } else {
+                        if let Some(d) = case_body_depth.take() {
+                            depth = d;
+                        }
+                        in_case_label = false;
+                    }
+                }
+
                 if !at_line_start(&out) {
                     newline(&mut out);
                 }
@@ -227,7 +251,9 @@ impl Formatter {
                 out.push_str(&self.cfg.indent.repeat(depth));
                 out.push('}');
                 prev_was_rbrace_toplevel = depth == 0;
+                prev_was_preprocessor = false;
                 newline(&mut out);
+                prev_real = last_real;
                 last_real = Some(tk);
                 awaiting_body = false;
 
@@ -239,6 +265,10 @@ impl Formatter {
                 awaiting_body = false;
                 braceless_saved_depth = None;
 
+                if case_body_depth.is_some() {
+                    case_open_braces += 1;
+                }
+
                 if !at_line_start(&out) {
                     newline(&mut out);
                 }
@@ -246,7 +276,9 @@ impl Formatter {
                 out.push('{');
                 depth += 1;
                 prev_was_rbrace_toplevel = false;
+                prev_was_preprocessor = false;
                 newline(&mut out);
+                prev_real = last_real;
                 last_real = Some(tk);
                 i += 1;
                 continue;
@@ -256,13 +288,15 @@ impl Formatter {
                 if !at_line_start(&out) {
                     newline(&mut out);
                 }
-                if need_blank {
+                if need_blank || prev_was_rbrace_toplevel {
                     out.push('\n');
                 }
                 out.push_str(&self.cfg.indent.repeat(depth));
                 out.push_str(&tk.text);
+                prev_real = last_real;
                 last_real = Some(tk);
                 prev_was_rbrace_toplevel = false;
+                prev_was_preprocessor = true;
                 i += 1;
                 continue;
             }
@@ -284,15 +318,25 @@ impl Formatter {
                         out.push(' ');
                     }
                 }
+                prev_real = last_real;
                 last_real = Some(tk);
+                prev_was_preprocessor = false;
                 i += 1;
                 continue;
             }
 
             if tk.kind == TokenKind::Colon {
                 out.push(':');
+                if in_case_label {
+                    case_body_depth = Some(depth);
+                    case_open_braces = 0;
+                    depth += 1;
+                    in_case_label = false;
+                }
                 newline(&mut out);
+                prev_real = last_real;
                 last_real = Some(tk);
+                prev_was_preprocessor = false;
                 i += 1;
                 continue;
             }
@@ -320,6 +364,8 @@ impl Formatter {
                 }
                 out.push(')');
                 prev_was_rbrace_toplevel = false;
+                prev_was_preprocessor = false;
+                prev_real = last_real;
                 last_real = Some(tk);
                 i += 1;
                 continue;
@@ -331,17 +377,23 @@ impl Formatter {
                 }
                 out.push_str(&self.cfg.indent.repeat(depth));
                 out.push_str("else");
-                last_real = Some(tk);
-                prev_was_rbrace_toplevel = false;
 
                 let nxt = next_real(i);
-                let next_is_if_or_brace =
-                    nxt.map_or(false, |t| t.is_ident("if") || t.kind == TokenKind::LBrace);
-                if !next_is_if_or_brace {
+                let next_is_if = nxt.map_or(false, |t| t.is_ident("if"));
+                let next_is_brace = nxt.map_or(false, |t| t.kind == TokenKind::LBrace);
+
+                if next_is_if {
+                } else if next_is_brace {
+                    newline(&mut out);
+                } else {
                     awaiting_body = true;
+                    newline(&mut out);
                 }
 
-                newline(&mut out);
+                prev_real = last_real;
+                last_real = Some(tk);
+                prev_was_rbrace_toplevel = false;
+                prev_was_preprocessor = false;
                 i += 1;
                 continue;
             }
@@ -355,6 +407,14 @@ impl Formatter {
                 if !at_line_start(&out) {
                     newline(&mut out);
                 }
+            }
+
+            if tk.kind == TokenKind::Ident && (tk.text == "case" || tk.text == "default") {
+                if let Some(d) = case_body_depth.take() {
+                    depth = d;
+                    case_open_braces = 0;
+                }
+                in_case_label = true;
             }
 
             if tk.kind == TokenKind::Ident && is_control_kw(&tk.text) {
@@ -376,15 +436,17 @@ impl Formatter {
                 if space_after_lparen {
                     out.push(' ');
                 } else if let Some(prev) = last_real {
-                    if needs_space(prev, tk) {
+                    if needs_space(prev_real, prev, tk) {
                         out.push(' ');
                     }
                 }
                 out.push_str(&tk.text);
             }
 
+            prev_real = last_real;
             last_real = Some(tk);
             prev_was_rbrace_toplevel = false;
+            prev_was_preprocessor = false;
             i += 1;
         }
 
