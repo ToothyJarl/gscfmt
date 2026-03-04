@@ -341,6 +341,48 @@ impl Formatter {
                 continue;
             }
 
+            if tk.kind == TokenKind::LBracket
+                && tokens
+                    .get(i + 1)
+                    .map_or(false, |t| t.kind == TokenKind::LBracket)
+            {
+                if !at_line_start(&out) {
+                    if let Some(prev) = last_real {
+                        let is_value = matches!(
+                            prev.kind,
+                            TokenKind::Ident
+                                | TokenKind::Number
+                                | TokenKind::StringLit
+                                | TokenKind::RBracket
+                                | TokenKind::RParen
+                        );
+                        if is_value {
+                            out.push(' ');
+                        }
+                    }
+                }
+                out.push_str("[[ ");
+                prev_real = last_real;
+                last_real = Some(tk);
+                prev_was_preprocessor = false;
+                i += 2;
+                continue;
+            }
+
+            if tk.kind == TokenKind::RBracket
+                && tokens
+                    .get(i + 1)
+                    .map_or(false, |t| t.kind == TokenKind::RBracket)
+            {
+                strip_trailing_space(&mut out);
+                out.push_str(" ]]");
+                prev_real = last_real;
+                last_real = Some(tk);
+                prev_was_preprocessor = false;
+                i += 2;
+                continue;
+            }
+
             if tk.kind == TokenKind::LParen {
                 paren_depth += 1;
             } else if tk.kind == TokenKind::RParen {
