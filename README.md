@@ -2,8 +2,6 @@
 
 A tool for formatting GSC code.
 
----
-
 ## Installation
 
 `gscfmt` is distributed as a standalone executable.
