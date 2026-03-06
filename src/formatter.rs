@@ -272,6 +272,7 @@ impl Formatter {
                 if !at_line_start(&out) {
                     newline(&mut out);
                 }
+
                 out.push_str(&self.cfg.indent.repeat(depth));
                 out.push('{');
                 depth += 1;
@@ -351,19 +352,31 @@ impl Formatter {
                     .get(i + 1)
                     .map_or(false, |t| t.kind == TokenKind::LBracket)
             {
-                if !at_line_start(&out) {
-                    if let Some(prev) = last_real {
-                        let is_value = matches!(
-                            prev.kind,
-                            TokenKind::Ident
-                                | TokenKind::Number
-                                | TokenKind::StringLit
-                                | TokenKind::RBracket
-                                | TokenKind::RParen
-                        );
-                        if is_value {
-                            out.push(' ');
-                        }
+                if awaiting_body {
+                    awaiting_body = false;
+                    braceless_saved_depth = Some(depth);
+                    depth += 1;
+                    if !at_line_start(&out) {
+                        newline(&mut out);
+                    }
+                }
+
+                if at_line_start(&out) {
+                    if need_blank {
+                        out.push('\n');
+                    }
+                    out.push_str(&self.cfg.indent.repeat(depth));
+                } else if let Some(prev) = last_real {
+                    let is_value = matches!(
+                        prev.kind,
+                        TokenKind::Ident
+                            | TokenKind::Number
+                            | TokenKind::StringLit
+                            | TokenKind::RBracket
+                            | TokenKind::RParen
+                    );
+                    if is_value {
+                        out.push(' ');
                     }
                 }
                 out.push_str("[[ ");
