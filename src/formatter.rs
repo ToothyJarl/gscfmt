@@ -275,6 +275,11 @@ impl Formatter {
                 out.push_str(&self.cfg.indent.repeat(depth));
                 out.push('{');
                 depth += 1;
+
+                if next_real(i).map_or(false, |t| t.kind == TokenKind::RBrace) {
+                    out.push('\n');
+                }
+
                 prev_was_rbrace_toplevel = false;
                 prev_was_preprocessor = false;
                 newline(&mut out);
