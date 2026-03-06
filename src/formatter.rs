@@ -119,6 +119,10 @@ impl Formatter {
                 return pk.is_binary_op() || *pk == TokenKind::Comma;
             }
 
+            if matches!(pk, TokenKind::Bang | TokenKind::Tilde) {
+                return false;
+            }
+
             let is_unary = matches!(pk, TokenKind::Minus | TokenKind::Plus)
                 && pprev.map_or(true, |pp| {
                     matches!(

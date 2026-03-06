@@ -381,7 +381,7 @@ main()
         }
     }
 
-    if ( level.script == level.missionsettings.levels[0].name && ! level.player getlocalplayerprofiledata( "hasEverPlayed_SP" ) )
+    if ( level.script == level.missionsettings.levels[0].name && !level.player getlocalplayerprofiledata( "hasEverPlayed_SP" ) )
         maps\_utility::delaythread( 0.1, ::update_gamer_profile );
 
     var_11 = level.player getplayersetting( "gameskill" );
@@ -656,7 +656,7 @@ waterthink()
     {
         wait 0.05;
 
-        if ( ! level.player.inwater && var_2 )
+        if ( !level.player.inwater && var_2 )
         {
             var_2 = 0;
             level.player allowprone( 1 );
@@ -1037,7 +1037,7 @@ display_starts()
 
     for (;;)
     {
-        if ( ! level.player buttonpressed( "F10" ) )
+        if ( !level.player buttonpressed( "F10" ) )
             level.display_starts_pressed = 0;
 
         if ( var_11 != var_7 )
@@ -1054,7 +1054,7 @@ display_starts()
                 var_7--;
             }
         }
-        else if ( ! level.player buttonpressed( "UPARROW" ) && ! level.player buttonpressed( "DPAD_UP" ) && ! level.player buttonpressed( "APAD_UP" ) )
+        else if ( !level.player buttonpressed( "UPARROW" ) && !level.player buttonpressed( "DPAD_UP" ) && !level.player buttonpressed( "APAD_UP" ) )
             var_8 = 0;
 
         if ( !var_9 )
@@ -1065,7 +1065,7 @@ display_starts()
                 var_7++;
             }
         }
-        else if ( ! level.player buttonpressed( "DOWNARROW" ) && ! level.player buttonpressed( "DPAD_DOWN" ) && ! level.player buttonpressed( "APAD_DOWN" ) )
+        else if ( !level.player buttonpressed( "DOWNARROW" ) && !level.player buttonpressed( "DPAD_DOWN" ) && !level.player buttonpressed( "APAD_DOWN" ) )
             var_9 = 0;
 
         if ( var_7 < 0 )
